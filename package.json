@@ -1,0 +1,61 @@
+{
+  "name": "servicenow-mcp-server",
+  "version": "2.1.7",
+  "description": "Multi-instance ServiceNow MCP server with 40+ tools, natural language search, and local script development",
+  "main": "src/server.js",
+  "type": "module",
+  "mcpName": "io.github.nickzitzer/servicenow-nodejs",
+  "bin": {
+    "servicenow-mcp-server": "./src/stdio-server.js"
+  },
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "stdio": "node src/stdio-server.js",
+    "inspector": "npx @modelcontextprotocol/inspector",
+    "extract-metadata": "node scripts/extract-table-metadata.js",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --watch",
+    "test:coverage": "NODE_OPTIONS=--experimental-vm-modules jest --coverage",
+    "test:verbose": "NODE_OPTIONS=--experimental-vm-modules jest --verbose"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.25.3",
+    "axios": "^1.13.4",
+    "chokidar": "^4.0.3",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.1",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "jest": "^25.0.0",
+    "nodemon": "^3.0.2"
+  },
+  "author": "Happy Technologies LLC",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Happy-Technologies-LLC/mcp-servicenow-nodejs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Happy-Technologies-LLC/mcp-servicenow-nodejs/issues"
+  },
+  "homepage": "https://github.com/Happy-Technologies-LLC/mcp-servicenow-nodejs#readme",
+  "keywords": [
+    "mcp",
+    "modelcontextprotocol",
+    "servicenow",
+    "itsm",
+    "claude",
+    "ai",
+    "automation",
+    "rest-api",
+    "service-catalog",
+    "cmdb",
+    "workflow",
+    "flow-designer",
+    "update-set",
+    "multi-instance"
+  ]
+}
