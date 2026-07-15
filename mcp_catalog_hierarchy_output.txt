@@ -1,0 +1,363 @@
+TOTAL COUNTS
+L1 categories: 36
+L2 categories: 15
+Catalog items (active): 270
+
+CATALOG TREE (L1 -> L2 -> Items)
+- L1: Anonymous HR (0)
+- L1: Benefits (24)
+  - Direct Items (24)
+    - 401(k) Plan Enrollment
+    - 401(k) Plan Enrollment Inquiry
+    - 401(k) Retirement Plan Inquiry
+    - Add Beneficiaries
+    - Beneficiaries Inquiry
+    - Dental Benefits Enrollment Inquiry
+    - Dental Benefits Inquiry
+    - Dental Plan Enrollment
+    - General Benefits Inquiry
+    - Medical Benefits Enrollment Inquiry
+    - Medical Benefits Inquiry
+    - Medical Plan Enrollment
+    - Pharmacy Benefits Enrollment Inquiry
+    - Pharmacy Benefits Inquiry
+    - Pharmacy Plan Enrollment
+    - Request Leave of Absence
+    - Request Relocation Assistance
+    - Request Tuition Reimbursement
+    - Tuition Reimbursement Inquiry
+    - Tuition Reimbursement Pre-Approval Request
+    - Tuition Reimbursement Request
+    - Vision Benefits Enrollment Inquiry
+    - Vision Benefits Inquiry
+    - Vision Plan Enrollment
+- L1: Business Application Lifecycle Management (6)
+  - Direct Items (6)
+    - Customer Self-Service Portal
+    - Register a Business Application
+    - Request a Digital Integration
+    - Request Architecture Review
+    - Retire Business Application
+    - Retire Digital Integration
+- L1: Business Services (1)
+  - Direct Items (1)
+    - Create Contact
+- L1: Can We Help You? (19)
+  - Direct Items (19)
+    - Change Password
+    - Create a New Demand
+    - Create a New Enhancement
+    - Create Agile Group
+    - Create Incident
+    - Create incident with Now Assist
+    - General Request
+    - International Plan Request
+    - Item Designer Category Request
+    - New Hire
+    - Parking Sticker Request
+    - Password Reset Enrollment
+    - Register GenAI Demo
+    - Report a Defect
+    - Report an Incident
+    - Report Outage
+    - Report Performance Problem
+    - Request Knowledge Base
+    - Submit New Demand
+- L1: Certificate Management (5)
+  - L2: Manual (2)
+    - Renew Certificate (Manual)
+    - Request New Certificate (Manual)
+  - L2: Automated Flow (3)
+    - Renew Certificate (Automated)
+    - Request New Certificate (Automated)
+    - Revoke Certificate (Automated)
+- L1: Computer (0)
+- L1: Constituent Services (0)
+- L1: Departmental Services (1)
+  - Direct Items (1)
+    - Service Category Request
+- L1: Employee Data Management (1)
+  - Direct Items (1)
+    - Employee Profile Update
+- L1: Employee Relations (0)
+- L1: Field Service (0)
+- L1: Firewall Rules (1)
+  - Direct Items (1)
+    - Request Firewall Rule
+- L1: General (3)
+  - Direct Items (3)
+    - Employment Verification Letter
+    - General Inquiry
+    - Verification of Employment
+- L1: Governance, Risk, and Compliance (7)
+  - Direct Items (7)
+    - Policy Exception
+    - Raise an AI inquiry
+    - Report an AI case
+    - Report Issue
+    - Request a dataset
+    - Request an AI model
+    - Request an AI use case
+- L1: Hardware (21)
+  - Direct Items (11)
+    - Apple MacBook Pro 15"
+    - Apple Watch
+    - Developer Laptop (Mac)
+    - Development Laptop (PC)
+    - HyperDeploy VLAN Request
+    - iPad mini
+    - iPad pro
+    - Laptop Request
+    - Loaner Laptop
+    - Sales Laptop
+    - Standard Laptop
+  - L2: Cables and Adapters (3)
+    - Apple USB-C charge cable
+    - Multiport AV adapter
+    - USB-C power adapter
+  - L2: Desktops (0)
+  - L2: Laptops (1)
+    - New Laptop Request
+  - L2: Mobiles (5)
+    - Apple iPhone 13
+    - Apple iPhone 13 pro
+    - Galaxy Note 20
+    - Pixel 4a
+    - Samsung Galaxy S22 Ultra 5G
+  - L2: Printers (1)
+    - Brother Network-Ready Color Laser Printer
+  - L2: Tablets (0)
+- L1: HR Systems (6)
+  - Direct Items (6)
+    - HR Account Access Request
+    - HR Accounts Inquiry
+    - HR Portal Support Request
+    - HR Report Inquiry
+    - HR Report Request
+    - Password Reset
+- L1: Infrastructure (4)
+  - Direct Items (3)
+    - Application Server (Large)
+    - Application Server (Standard)
+    - Database Server & Oracle License
+  - L2: Services (1)
+    - VM Provisioning
+- L1: Office (23)
+  - Direct Items (6)
+    - Cisco jabber softphone
+    - Packaging and Shipping
+    - Paper and Supplies
+    - Request SharePoint Site
+    - Telephone Extension
+    - Zoom desk phone
+  - L2: Services (17)
+    - [Demo] Add/Remove users from group
+    - Add/Remove users from group
+    - Big Data Analysis
+    - Business Idea
+    - Corporate Mobile Devices - Bulk Orders
+    - Document Creation
+    - Endpoint Security
+    - Finishing Services
+    - Firewall Rule Change
+    - Group Modifications
+    - Install Software
+    - Provision a Database
+    - Request for Backup
+    - Server Tuning
+    - Submit a New Demand
+    - Table Index
+    - Whitelist IP
+- L1: Payroll (4)
+  - Direct Items (4)
+    - Direct Deposit Inquiry
+    - Direct Deposit Setup
+    - Payroll Discrepancy
+    - Request Corporate Credit Card
+- L1: Peripherals (23)
+  - Direct Items (23)
+    - 3M Privacy Filter - Lenovo X1 Carbon
+    - 3M Privacy Filter - MacBook Pro
+    - 3M Privacy Filter - Macbook Pro Retina
+    - Apple Thunderbolt to Ethernet Adapter
+    - Belkin iPad Mini Case
+    - Lenovo ThinkPad Power Adapter - 135W
+    - Lenovo Thinkpad Power Adapter - 90W
+    - Lenovo X1 Carbon Power Adapter
+    - Logitech USB Headset for PC & Mac
+    - Logitech Wireless Mouse
+    - MacBook Air Power Adapter
+    - MacBook Pro Power Adapter
+    - Microsoft Wired Keyboard
+    - Plantronics Wideband Headset
+    - Standard 22" Monitor
+    - Standard 24" Monitor
+    - Standard 27" Monitor
+    - StarTech Mini Display Port to VGA Adapter
+    - StarTech USB Mini Hub
+    - StarTech USB to DVI Adapter
+    - STM MacBook Air Sleeve
+    - STM MacBook Pro Sleeve 
+    - Wireless keyboard and  mouse
+- L1: Quick Links (2)
+  - Direct Items (2)
+    - Company policies
+    - Company portal
+- L1: Role Delegation (2)
+  - Direct Items (2)
+    - Delegate roles to group member
+    - Set a delegate for a direct report
+- L1: Services (1)
+  - Direct Items (1)
+    - Create Contact
+- L1: Services (2)
+  - Direct Items (2)
+    - Register Member at External Business Location
+    - Register Member at Internal Business Location
+- L1: Software (29)
+  - Direct Items (18)
+    - Access
+    - Acrobat
+    - Adobe Acrobat Pro
+    - Adobe Creative Cloud
+    - Application Packaging Request
+    - Camtasia
+    - Druva inSync, for Mac & PC
+    - IntelliJ IDEA
+    - Non-standard software request
+    - OmniGraffle Professional
+    - Project Pro for Office 365
+    - QuickTime Pro
+    - Request software GenAI
+    - SEGA Application Request
+    - Sketch
+    - Snagit
+    - Visio Pro for Office 365
+    - VMware Fusion
+  - L2: Application and Account Access (11)
+    - AWS account request
+    - Azure account request
+    - Clone group membership
+    - Miro
+    - New virtual pc request
+    - Password Reset Portal for Employees
+    - Request Demo4 Access
+    - Request DocuSign access
+    - Request dropbox account
+    - Request email alias
+    - Request zoom webinar
+- L1: Standard Changes (11)
+  - L2: Hardware Asset (3)
+    - Aircon Preventive Maintenance Request
+    - PHP Upgrade Template
+    - Replace printer toner
+  - L2: Network Standard Changes (3)
+    - Add network switch to datacenter cabinet
+    - Change VLAN on a Cisco switchport
+    - Clear BGP sessions on a Cisco router
+  - L2: Server Standard Changes (2)
+    - Decommission local office Domain Controller
+    - Reboot Windows Server
+  - L2: Template Management (3)
+    - Modify a Standard Change Template
+    - Propose a new Standard Change Template
+    - Retire a Standard Change Template
+- L1: Support (0)
+- L1: Support (4)
+  - Direct Items (4)
+    - Create a Customer Case
+    - Create case for a product
+    - Create case for a product (Now Assist)
+    - Create Case for Install Base
+- L1: Support (2)
+  - Direct Items (2)
+    - Need help with a product?
+    - The VIP Starter Experience
+- L1: Talent Management (0)
+- L1: Technology Reference Model Management (2)
+  - Direct Items (2)
+    - Request TRM Product
+    - Request TRM Product Lifecycle
+- L1: Top Requests (1)
+  - Direct Items (1)
+    - New Email Account
+- L1: Virtual Resources (0)
+- L1: Visas (1)
+  - Direct Items (1)
+    - Employee Travel Visa Request
+- L1: Workstation (0)
+
+UNMAPPED/ORPHAN (categories: 7, items: 59)
+- Orphan Categories
+  - Advanced Options (parent: 6cd4e599eb030100d4360c505206feb9, items: 0)
+  - Catalog Definition (parent: 6cd4e599eb030100d4360c505206feb9, items: 0)
+  - Catalog Processing (parent: 6cd4e599eb030100d4360c505206feb9, items: 0)
+  - Furniture and Decor (parent: d25201c8c611227a00667da13c6d33af, items: 1)
+    - Cubicle Modifications
+  - Janitorial (parent: d25201c8c611227a00667da13c6d33af, items: 0)
+  - Maintenance and Repair (parent: d25201c8c611227a00667da13c6d33af, items: 1)
+    - Repair Office Equipment
+  - Security and Access (parent: d25201c8c611227a00667da13c6d33af, items: 3)
+    - Office Keys
+    - Renew Certificate
+    - Request Security Escort
+- Orphan Items (missing/invalid category)
+  - 662f3fd6972cf290e6e7b856f053af07 (category: <empty>)
+  - 9d1b8ca497121a50e6e7b856f053af47 (category: <empty>)
+  - ACME Application Onboarding (category: <empty>)
+  - Assign Office Space (category: d2f797a5c611227a01ad68841dc3e7b5)
+  - Catalog Client Script (category: <empty>)
+  - Catalog Item Builder (category: <empty>)
+  - Catalog UI Policy (category: <empty>)
+  - Catalog UI Policy Actions (category: <empty>)
+  - Catalog Variable Creation (category: <empty>)
+  - Change Agent Capacity (Group) (category: <empty>)
+  - Change Agent Capacity (Service Channel) (category: <empty>)
+  - Change Start Date (category: <empty>)
+  - Conference Room Reservations (category: d25201c8c611227a00667da13c6d33af)
+  - Create a generic ticket (category: <empty>)
+  - Create a new Content Template (category: <empty>)
+  - Create a new Export Set (category: <empty>)
+  - Create an Incident for AI Agents (category: <empty>)
+  - Create Artifact Processor (category: <empty>)
+  - Create Business (category: <empty>)
+  - Create Case (category: <empty>)
+  - Create Case for CSM Outlook (category: <empty>)
+  - Create Constituent (category: <empty>)
+  - Create Contact for CSM Outlook (category: <empty>)
+  - Create Exclusion Rules (category: <empty>)
+  - Create External Sources Schema Table (category: <empty>)
+  - Create External User Mapping Table (category: <empty>)
+  - Create Incident using VA (category: <empty>)
+  - Creator Studio - Variable Editor (category: <empty>)
+  - Data Discovery Finding (category: <empty>)
+  - Demo Flow Designer (category: <empty>)
+  - Desk Set Up (category: <empty>)
+  - Event Planning (category: d25201c8c611227a00667da13c6d33af)
+  - Field Encryption Settings (category: <empty>)
+  - How can I help you? (category: <empty>)
+  - Hozak's demand (category: <empty>)
+  - IAR Configuration CRP (category: <empty>)
+  - Instance Access Request (category: <empty>)
+  - IP Address & DNS Management (category: <empty>)
+  - Manage Knowledge Ownership Group (category: <empty>)
+  - New Application Introduction (category: <empty>)
+  - New LDAP Server (category: <empty>)
+  - NowAssist catalog item 1.4 (category: <empty>)
+  - Password Reset Extension Script (category: <empty>)
+  - Record Producer Builder (category: <empty>)
+  - Report Risk Event (category: <empty>)
+  - Request Developer Project Equipment (category: <empty>)
+  - Request Help (category: <empty>)
+  - Request Phone PIN (category: <empty>)
+  - Secure Data Export (category: <empty>)
+  - SEGA Survey Test (category: <empty>)
+  - Service Fulfillment Steps - Base step (category: <empty>)
+  - Service Fulfillment Steps - Custom approval step (category: <empty>)
+  - Service Fulfillment Steps - Task step (category: <empty>)
+  - Set Universal Capacity (category: <empty>)
+  - Setup PIN (category: <empty>)
+  - Test (category: <empty>)
+  - Test Exclusion Rule (category: <empty>)
+  - Update Application Attributes (category: <empty>)
+  - What can we help you with? (category: <empty>)

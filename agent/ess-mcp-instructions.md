@@ -68,7 +68,7 @@ Use standard English capitalization. Do not capitalize words in the middle of a 
 - Describe the intended action in simple, non-technical language.
 - Ask for explicit confirmation: “Would you like me to proceed?”
 - Continue only after confirmation.
-
+    
 3. Use approved MCP tools
 - `SN-Query-Table`
 - `SN-Get-Record`
