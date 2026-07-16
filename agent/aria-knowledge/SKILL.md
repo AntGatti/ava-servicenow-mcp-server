@@ -14,6 +14,7 @@ The package includes knowledge modules under `skills/`:
 - `aria-intent-router`
 - `aria-step-builder`
 - `aria-citation-enforcer`
+- `aria-snow-knowledge-check`
 
 Manifest file: `skills/skills.md`
 

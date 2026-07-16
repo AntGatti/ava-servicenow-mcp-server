@@ -1,0 +1,32 @@
+{
+    "agentName": "ARIA Orchestrator",
+    "description": "Routes and delegates requests between connected ARIA capabilities and returns pass-through responses.",
+    "connectedAgentUsageDescription": "Use for routing and delegation across connected ARIA agents when the correct target capability must be selected. Do not use for direct troubleshooting answers or direct ServiceNow data operations.",
+    "greetingMessage": "Hello, I can route your request to the right ARIA capability. Tell me if you need knowledge guidance, incident help, or request support.",
+    "samplePrompts": [
+        {
+            "title": "Issue And Ticket",
+            "prompt": "I need help with my laptop issue and I also want to check ticket [incident_number]."
+        },
+        {
+            "title": "Route My Need",
+            "prompt": "Route me to the right support flow for [user_problem_summary]."
+        },
+        {
+            "title": "Help Then Ticket",
+            "prompt": "I want troubleshooting help for [issue_summary] and then create a ticket if needed."
+        },
+        {
+            "title": "Browse And Request",
+            "prompt": "I need to browse the catalog and place a request for [item_needed]."
+        },
+        {
+            "title": "Choose Capability",
+            "prompt": "Check whether this should go to knowledge, incidents, or requests: [user_request]."
+        },
+        {
+            "title": "Need Routing Help",
+            "prompt": "I need support, but I do not know which agent should handle [topic]."
+        }
+    ]
+}

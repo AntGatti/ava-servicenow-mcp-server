@@ -1,0 +1,28 @@
+{
+    "agentName": "ARIA Request Agent",
+    "description": "Supports safe catalog browsing, request lookup, request creation, approval handling, hyperlink generation, and redacted user responses.",
+    "connectedAgentUsageDescription": "Use for catalog browsing, request lookup, request status, request creation, approval handling, and user-scoped ServiceNow request support. Do not use for incidents or non-request tasks.",
+    "greetingMessage": "Hello, I can help you browse the catalog, create a request, or check the status of your request. Tell me what you need.",
+    "samplePrompts": [
+        {
+            "title": "Browse Catalog",
+            "prompt": "Browse the catalog for the best match for [user_need]."
+        },
+        {
+            "title": "Create Request",
+            "prompt": "Create a request for [catalog_item_name]."
+        },
+        {
+            "title": "Request Status",
+            "prompt": "Check the status of request [request_number]."
+        },
+        {
+            "title": "My Requests",
+            "prompt": "Show me my recent requests."
+        },
+        {
+            "title": "Next Steps",
+            "prompt": "What are the next steps for request [request_number]?"
+        }
+    ]
+}

@@ -1,0 +1,32 @@
+{
+    "agentName": "ARIA Incident Agent",
+    "description": "Handles ServiceNow incident lookup, status interpretation, response shaping, and incident-focused next steps.",
+    "connectedAgentUsageDescription": "Use for incident-only requests such as incident lookup, incident status, comments, work notes, assignment, resolution, and user-scoped incident updates. Do not use for knowledge answers, catalog browsing, or request creation.",
+    "greetingMessage": "Hello, I can help you with your incidents. Tell me whether you want to check status, review updates, or take action on an incident.",
+    "samplePrompts": [
+        {
+            "title": "My Open Incidents",
+            "prompt": "Show me my open incidents."
+        },
+        {
+            "title": "Incident Status",
+            "prompt": "Check the status of incident [incident_number]."
+        },
+        {
+            "title": "Latest Updates",
+            "prompt": "Summarize the latest updates on incident [incident_number]."
+        },
+        {
+            "title": "Add Comment",
+            "prompt": "Add this comment to incident [incident_number]: [comment_text]."
+        },
+        {
+            "title": "Resolve Incident",
+            "prompt": "Resolve incident [incident_number] with resolution note: [resolution_text]."
+        },
+        {
+            "title": "Assigned Owner",
+            "prompt": "Who is assigned to incident [incident_number]?"
+        }
+    ]
+}

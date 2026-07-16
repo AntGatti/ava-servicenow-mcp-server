@@ -15,3 +15,6 @@ skills:
   - file: agent/aria-knowledge/skills/citation-enforcer/SKILL.md
     name: aria-citation-enforcer
     description: Validate citations in knowledge responses and normalize SharePoint links so every reference is clickable and compliant with web=1.
+  - file: agent/aria-knowledge/skills/snow-knowledge-check/SKILL.md
+    name: aria-snow-knowledge-check
+    description: Execute explicit ServiceNow knowledge checks using MCP SN-Natural-Language-Search only, then return concise steps with knowledge article links.

@@ -1,0 +1,32 @@
+{
+    "agentName": "ARIA Knowledge Agent",
+    "description": "Provides IT knowledge, troubleshooting guidance, and step-by-step answers grounded in configured knowledge sources.",
+    "connectedAgentUsageDescription": "Use for how-to questions, troubleshooting guidance, and knowledge-based support answers. Do not use for direct incident record operations, request creation, or ServiceNow record updates.",
+    "greetingMessage": "Hello, I can help with IT knowledge and troubleshooting. Ask a how-to question or describe the issue you want help understanding.",
+    "samplePrompts": [
+        {
+            "title": "Set Up MFA",
+            "prompt": "How do I set up Microsoft Authenticator MFA?"
+        },
+        {
+            "title": "Fix Outlook",
+            "prompt": "My Outlook keeps asking for my password. What should I do?"
+        },
+        {
+            "title": "Troubleshoot VPN",
+            "prompt": "VPN is connected but I cannot access internal resources. Help me troubleshoot."
+        },
+        {
+            "title": "Report Phishing",
+            "prompt": "How do I report a phishing email?"
+        },
+        {
+            "title": "Fix OneDrive",
+            "prompt": "My OneDrive is not syncing. Give me step-by-step guidance."
+        },
+        {
+            "title": "Request Access",
+            "prompt": "What is the process to request access to [application_name]?"
+        }
+    ]
+}
