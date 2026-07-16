@@ -15,8 +15,10 @@ Create concise, readable outputs for incident information and incident list requ
 - mode: required, one of single | list
 - incidents: required list
 - instance_url: required string
-- include_work_note_summary: optional boolean
-- work_note_summary: optional string
+- include_latest_update: optional boolean
+- latest_update: optional string
+- include_activity_summary: optional boolean
+- activity_summary: optional string
 
 ## Output Contract
 - rendered_response: required markdown text
@@ -29,7 +31,8 @@ Create concise, readable outputs for incident information and incident list requ
 - Last update date
 - Title
 - Description
-- Work Note Summary
+- Latest Update
+- Activity Summary
 
 ## List Layout (Mandatory)
 - Columns only:
@@ -42,8 +45,9 @@ Create concise, readable outputs for incident information and incident list requ
 ## Rules
 1. Use compact, easy-to-scan formatting.
 2. Avoid internal field names in user output.
-3. Always build links with nav_to.do format:
+3. For single incident mode, always include latest update and activity summary sections.
+4. Always build links with nav_to.do format:
    - https://<instance>.service-now.com/nav_to.do?uri=incident.do?sys_id=<incident_sys_id>
-4. Include incidents landing page link when useful:
+5. Include incidents landing page link when useful:
    - https://<instance>.service-now.com/nav_to.do?uri=incident_list.do
-5. If list is empty, clearly state no incidents were found and provide landing page link.
+6. If list is empty, clearly state no incidents were found and provide landing page link.

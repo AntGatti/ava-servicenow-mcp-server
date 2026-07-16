@@ -27,6 +27,7 @@ Ensure every knowledge answer contains valid, clickable SharePoint references.
 3. If the URL already contains query parameters, append &web=1 instead.
 4. Citations must point to the exact source document used.
 5. If citation checks fail, return compliance=fail with issues and require regeneration.
+6. Fast path: if exactly one citation exists, it is in retrieved_sources, and already has web=1, return compliance=pass without additional normalization work.
 
 ## Link Normalization
 - Input: https://contoso.sharepoint.com/sites/it/Shared%20Documents/Guide.docx
