@@ -19,7 +19,7 @@ Classify the user request for request-agent routing.
 - intent: catalog_browsing | request_creation | request_status | approval_handling | no_match
 - confidence: high | medium | low
 - rationale: short sentence
-- next_action: delegate_catalog | delegate_request | delegate_status | delegate_approval | refuse_or_redirect | ask_clarification
+- next_action: delegate_catalog | delegate_request | delegate_status | delegate_approval | require_catalog_selection | refuse_or_redirect | ask_clarification
 - user_visible: false
 
 ## Rules
@@ -29,3 +29,5 @@ Classify the user request for request-agent routing.
 4. Use no_match when the request is outside request-agent scope or no valid user-owned match exists.
 5. Keep rationale concise and user-safe.
 6. This output is internal and must not be returned directly to end users.
+7. For generic request creation asks (for example laptop, software, access, device), set next_action=require_catalog_selection.
+8. In require_catalog_selection flows, catalog shortlist and explicit user selection are mandatory before create.

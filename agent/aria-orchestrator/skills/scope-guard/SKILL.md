@@ -20,7 +20,7 @@ Prevent unsupported actions and keep orchestrator within scope.
 - guard_response: required when in_scope=false
 
 ## Rules
-1. Allow only orchestration of connected knowledge and incident agents.
+1. Allow only orchestration of connected knowledge, incident, and request agents.
 2. Refuse unrelated tasks briefly and politely.
-3. Redirect user to supported knowledge or incident requests.
+3. Redirect user to supported knowledge, incident, or request requests.
 4. Never perform direct non-orchestration tasks.

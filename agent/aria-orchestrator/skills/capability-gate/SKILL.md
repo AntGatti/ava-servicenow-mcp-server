@@ -22,6 +22,6 @@ Ensure capability responses mention only connected-agent functionality.
 - response_guidance: short text
 
 ## Rules
-1. Mention only knowledge and incident capabilities.
+1. Mention only knowledge, incident, and request capabilities.
 2. Do not claim coding, file ops, analytics, or unrelated automation.
 3. For out-of-scope requests, provide brief redirect to supported use cases.

@@ -19,8 +19,10 @@ Create safe clickable links for request-related references.
 ## Output Contract
 - linked_text: string
 - user_visible: true
+- id_link_markdown: optional string for normalized ticket overview rows
 
 ## Rules
 1. Use clickable hyperlinks for request and catalog references when a safe target exists.
 2. Do not expose unsafe technical identifiers in link text.
 3. If a safe link cannot be formed, keep the reference in plain language.
+4. When used for tickets_concise_table output, return id_link_markdown so orchestrator merge can render ID as clickable text.

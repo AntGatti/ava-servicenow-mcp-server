@@ -23,4 +23,4 @@ skills:
     description: Render compact, user-friendly incident cards and tables for single incident and incident list responses.
   - file: agent/aria-incident/skills/next-step-suggester/SKILL.md
     name: aria-next-step-suggester
-    description: Append exactly three relevant next-step options plus a free-text continuation prompt to every incident response.
+    description: Append exactly three relevant next-step options plus the shared menu ending line to every incident response.

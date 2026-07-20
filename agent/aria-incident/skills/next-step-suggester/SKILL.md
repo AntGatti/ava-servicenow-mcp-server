@@ -1,6 +1,6 @@
 ---
 name: aria-next-step-suggester
-description: Append exactly three relevant next-step options plus a free-text continuation prompt to every incident response.
+description: Append exactly three relevant next-step options plus the shared menu ending line to every incident response.
 ---
 
 # ARIA Next Step Suggester
@@ -24,8 +24,8 @@ Provide actionable follow-up options at the end of each incident response.
 1. Return exactly 3 next-step options.
 2. Options must be relevant to the current conversation and last action.
 3. Keep option wording short and user-friendly.
-4. Always append the free-text continuation line.
+4. Always append the exact shared menu ending line.
 5. Do not include technical/internal commands.
 
 ## Free-Text Line (Mandatory)
-"Or tell me what you want to do next."
+"Reply with 1, 2, or 3, or type your own reply."

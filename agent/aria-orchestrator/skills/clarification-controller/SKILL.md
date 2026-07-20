@@ -25,3 +25,4 @@ Minimize clarification while preserving routing accuracy.
 2. Ask a second clarification only if still ambiguous.
 3. Keep question short and directly tied to routing.
 4. If enough context exists, do not ask and proceed with delegation.
+5. For ambiguous ticket requests, prefer: "Do you want incidents, requests, or both?"

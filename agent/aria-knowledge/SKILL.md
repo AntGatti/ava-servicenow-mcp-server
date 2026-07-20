@@ -16,7 +16,7 @@ The package includes knowledge modules under `skills/`:
 - `aria-citation-enforcer`
 - `aria-snow-knowledge-check`
 
-Manifest file: `skills/skills.md`
+Manifest file: `skills/SKILL.md`
 
 ## Operational Notes
 

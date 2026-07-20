@@ -18,7 +18,10 @@ Match the user need to the best catalog item.
 ## Output Contract
 - best_match: catalog item or none
 - alternates: list
+- shortlist: ordered list of up to 5 user-facing candidate items
 - match_confidence: high | medium | low
+- requires_user_selection: boolean
+- no_catalog_item_available: boolean
 - user_visible: false
 
 ## Rules
@@ -26,3 +29,7 @@ Match the user need to the best catalog item.
 2. Match by meaning, not only by title.
 3. If there are close matches, return alternates and require clarification.
 4. Never recommend an item unless it is confirmed as orderable.
+5. Always produce a concise shortlist before request creation flows.
+6. Set requires_user_selection=true when at least one shortlist item exists.
+7. Set no_catalog_item_available=true when no viable user-facing item is found.
+8. Do not allow implicit auto-selection for generic asks (for example: laptop, software, access).

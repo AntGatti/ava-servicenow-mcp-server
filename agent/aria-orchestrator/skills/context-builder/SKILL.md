@@ -16,6 +16,7 @@ Prepare clean handoff context for downstream agents.
 - user_email: optional string
 - intent: required string
 - incident_number: optional string
+- request_number: optional string
 - expected_output_format: optional string
 - conversation_summary: optional string
 
@@ -24,6 +25,7 @@ Prepare clean handoff context for downstream agents.
 
 ## Rules
 1. Include user display name and user email when available.
-2. Include incident number and desired output format when relevant.
+2. Include incident number, request number, and desired output format when relevant.
 3. Keep payload compact and omit irrelevant fields.
 4. Never inject unsupported assumptions.
+5. For ticket_overview intent, set expected_output_format=tickets_concise_table.

@@ -15,6 +15,7 @@ Create concise, readable outputs for incident information and incident list requ
 - mode: required, one of single | list
 - incidents: required list
 - instance_url: required string
+- expected_output_format: optional string, one of standard | tickets_concise_table
 - include_latest_update: optional boolean
 - latest_update: optional string
 - include_activity_summary: optional boolean
@@ -22,6 +23,7 @@ Create concise, readable outputs for incident information and incident list requ
 
 ## Output Contract
 - rendered_response: required markdown text
+- normalized_ticket_rows: optional list for orchestrator ticket overview mode
 
 ## Single Incident Layout (Mandatory)
 - Identifier (clickable incident link)
@@ -42,6 +44,22 @@ Create concise, readable outputs for incident information and incident list requ
   - Created date
 - Do not include priority.
 
+## Ticket Overview List Layout (Mandatory)
+- Use this layout only when expected_output_format=tickets_concise_table.
+- Columns only:
+   - Type (fixed value: Incident)
+   - ID (clickable)
+   - Short description
+   - Status
+   - Last update date
+- Produce normalized_ticket_rows with this schema per row:
+   - type: Incident
+   - id_text: incident number
+   - id_link_markdown: clickable incident link markdown
+   - short_description: plain language short description
+   - status: user-friendly status label
+   - last_update_date: date-only friendly format
+
 ## Rules
 1. Use compact, easy-to-scan formatting.
 2. Avoid internal field names in user output.
@@ -51,3 +69,4 @@ Create concise, readable outputs for incident information and incident list requ
 5. Include incidents landing page link when useful:
    - https://<instance>.service-now.com/nav_to.do?uri=incident_list.do
 6. If list is empty, clearly state no incidents were found and provide landing page link.
+7. When expected_output_format=tickets_concise_table, prefer last update date over created date.

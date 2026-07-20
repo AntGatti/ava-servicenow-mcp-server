@@ -18,7 +18,7 @@ The package includes incident modules under `skills/`:
 - `aria-incident-response-builder`
 - `aria-next-step-suggester`
 
-Manifest file: `skills/skills.md`
+Manifest file: `skills/SKILL.md`
 
 ## Operational Notes
 

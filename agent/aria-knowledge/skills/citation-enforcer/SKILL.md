@@ -29,6 +29,9 @@ Ensure every knowledge answer contains valid, clickable SharePoint references.
 5. If citation checks fail, return compliance=fail with issues and require regeneration.
 6. Fast path: if exactly one citation exists, it is in retrieved_sources, and already has web=1, return compliance=pass without additional normalization work.
 
+## Performance Notes
+- Keep citation handling O(1) for single-source answers by using the fast path and returning the draft with validated links unchanged.
+
 ## Link Normalization
 - Input: https://contoso.sharepoint.com/sites/it/Shared%20Documents/Guide.docx
 - Output: https://contoso.sharepoint.com/sites/it/Shared%20Documents/Guide.docx?web=1

@@ -14,7 +14,8 @@ Guarantee delegated response integrity.
 ## Input Contract
 - delegated_response: required string
 - source_agent: required value
-- delegation_sequence: optional ordered list of knowledge_agent | incident_agent
+- delegation_sequence: optional ordered list of knowledge_agent | incident_agent | request_agent
+- intent: optional value
 
 ## Output Contract
 - final_response: required string
@@ -23,6 +24,7 @@ Guarantee delegated response integrity.
 ## Rules
 1. Return delegated response exactly as received.
 2. Do not rewrite, summarize, translate, reformat, or append content.
-3. Apply to knowledge and incident agent responses.
+3. Apply to knowledge, incident, and request agent responses.
 4. If pass-through cannot be honored, return compliance=fail and trigger fallback handler.
 5. When multiple agents are invoked, delegated_response must be the last agent response in the sequence.
+6. Exception: when intent=ticket_overview, allow orchestrator to merge incident and request list outputs into one concise table and append one focused follow-up question for detail selection.
