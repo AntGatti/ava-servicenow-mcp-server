@@ -1,0 +1,37 @@
+# Import conversations to test your agent.
+#
+# Limitations
+# - 8 question-and-answer pairs max per conversation.
+# - 50 conversations max.
+# - 500 characters max per question, including spaces.
+#
+# Imported columns
+# conversationNumber - Identifies each conversation.
+# question - The user prompt that the agent will respond to.
+# response - The reference agent reply (optional).
+#
+conversationNumber,question,response
+1,"Who are you and how can you help me?","I can help with ServiceNow knowledge guidance, incident support, and service requests. I cannot perform unrelated tasks."
+1,"Hi can you help me with an issue connecting my VPN on my laptop at home?","Here are step-by-step VPN checks from our knowledge source. Includes at least one clickable SharePoint source link ending with ?web=1."
+1,"One other thing, can you talk me through setting up company MFA on my new personal iPhone, please?","Provides clear iPhone MFA setup steps from knowledge, includes a clickable SharePoint source link ending with ?web=1."
+1,"The camera is not picking up the QR code on the screen, is there another way to do it?","Provides fallback MFA setup method in steps (manual key/alternative flow) and cites a clickable SharePoint link ending with ?web=1."
+1,"Actually, can you tell me how to set up my work Outlook account on my new phone too please?","Provides step-by-step Outlook setup from knowledge and includes at least one clickable SharePoint source link ending with ?web=1."
+2,"Ah, this is too hard... can you create a ticket for someone to help me do it?","Creates an incident using context-resolved user email, confirms with clickable incident link and user-friendly status."
+2,"I think I may have already raised a ticket for this, can you give me a fully detailed list of my open tickets please?","Returns a concise combined Incident and Request table with clickable IDs, short description, status, and last update date."
+2,"Detailed list of my open tickets please?","Returns a concise combined Incident and Request table with clickable IDs, short description, status, and last update date."
+2,"Find a duplicate of the request.","If ambiguous, asks one clarification question; then returns likely duplicate request entries for the user with clickable request links."
+2,"Can I update and close off ticket INC0013936 please?","Verifies ownership by user email and applies update/resolve/close when allowed; confirms outcome with clickable incident link and friendly status."
+2,"Update ticket detail and click on resolve the ticket.","Requests minimal missing info first, then resolves incident if authorized; confirms with clickable incident link and status summary."
+3,"Can I request you order me a new laptop?","Runs catalog match-first, returns shortlist items with concise match reasons, and asks explicit selection before creating any request."
+3,"Can you raise a request for Adobe Acrobat Pro for me please?","Runs catalog match-first for Adobe Acrobat Pro, provides shortlist options, asks explicit selection before request creation."
+3,"Can you give me a list of all my requests with full details please?","Returns only user-owned requests filtered by resolved email with clickable request links, short description, status, and last update."
+3,"Can you cancel the order REQ0010137?","Verifies request ownership first; if authorized, cancels and confirms with clickable request link and updated status; otherwise returns polite no-info result."
+4,"Kan du hjälpa mig på svenska?","Svarar på svenska inom kunskap, incidenter och beställningar med kort och tydlig vägledning."
+4,"Visa mig alla mina tickets tack.","Svarar på svenska med en sammanslagen tabell för Incident och Request, inklusive klickbara ID-länkar och status."
+4,"Kan du hjälpa mig med ett problem att ansluta till mitt VPN på min laptop hemma?","Ger steg-for-steg VPN-hjalp pa svenska med minst en klickbar SharePoint-kalla som slutar med ?web=1."
+5,"Peux-tu m'aider ?","Repond en francais, decrit l'aide possible dans le perimetre (connaissances, incidents, demandes)."
+5,"Pourrais-tu m'aider avec un souci MFA sur mon téléphone ?","Fournit des etapes MFA en francais avec au moins un lien SharePoint cliquable se terminant par ?web=1."
+6,"Please provide feedback on your experience with the IT Support Agent.","Thanks the user and invites concise feedback on what worked and what should improve."
+6,"How would you rate the support you received today?","Asks for a clear rating and a short reason."
+6,"Was your issue resolved successfully?","Asks for a yes or no; if unresolved, offers next best action."
+6,"Do you have any suggestions to improve the experience?","Invites actionable suggestions such as speed, clarity, links, language, and workflow improvements."

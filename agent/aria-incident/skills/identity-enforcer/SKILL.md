@@ -28,11 +28,15 @@ Require end-user identity from context before any incident action and enforce st
 ## Rules
 1. End-user email is mandatory for every incident operation.
 2. If email is missing from context, return decision=block and fail safely before any MCP call.
-3. Retrieval must always include user email filter.
-4. Creation must always set caller/requester using user email.
-5. Never return, modify, or summarize incidents that do not match user email.
-6. Never bypass filtering unless explicit authorized admin context is provided by orchestrator policy.
-7. On mismatch detection, block output and return a safe refusal.
+3. Retrieval must always include user email filter using caller identity:
+	- `caller_id.email=<normalized_user_email>`
+4. Do not use `assigned_to.email=<normalized_user_email>` as the default ownership filter.
+5. Assignment-based filtering is allowed only when the user explicitly asks for assigned incidents.
+6. Incident-number retrieval must enforce ownership in the same query (example: `number=<incident_number>^caller_id.email=<normalized_user_email>`).
+7. Creation must always set caller/requester using user email.
+8. Never return, modify, or summarize incidents that do not match user email.
+9. Never bypass filtering unless explicit authorized admin context is provided by orchestrator policy.
+10. On mismatch detection, block output and return a safe refusal.
 
 ## Block Message Template
 "I couldn't verify the user identity for this request, so I can't continue safely right now."

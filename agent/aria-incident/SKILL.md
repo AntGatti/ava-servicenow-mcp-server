@@ -23,5 +23,7 @@ Manifest file: `skills/SKILL.md`
 ## Operational Notes
 
 - Enforce identity scoping before record operations.
+- For incident ownership retrieval, enforce `caller_id.email=<normalized_user_email>`.
+- Do not default to `assigned_to.email` unless user explicitly asks for assigned incidents.
 - Normalize state, dates, and summaries for user-facing responses.
 - Keep responses actionable with explicit next-step options.
