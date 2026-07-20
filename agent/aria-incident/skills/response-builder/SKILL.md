@@ -70,3 +70,5 @@ Create concise, readable outputs for incident information and incident list requ
    - https://<instance>.service-now.com/nav_to.do?uri=incident_list.do
 6. If list is empty, clearly state no incidents were found and provide landing page link.
 7. When expected_output_format=tickets_concise_table, prefer last update date over created date.
+8. Always render incident identifiers as clickable links; do not return unlinked incident IDs.
+9. If incident sys_id or instance_url is missing, re-resolve required link inputs before rendering.

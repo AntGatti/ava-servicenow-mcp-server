@@ -45,6 +45,8 @@ Enforce all user-visible orchestration policy decisions in one skill to reduce c
 12. If delegation remains unavailable after rephrase (fallback_attempt_count>=1), return polite_no_information.
 13. Never fabricate answers when delegation is unavailable.
 14. In non-pass-through user-visible modes, include exactly 3 menu options and the exact shared ending line.
+15. In ticket_overview_merge mode, ID must be rendered from id_link_markdown as clickable markdown for both incident and request rows.
+16. Do not emit plain unlinked ticket IDs in ticket_overview_merge output.
 
 ## Shared Menu Template (Mandatory)
 1. {option_1}

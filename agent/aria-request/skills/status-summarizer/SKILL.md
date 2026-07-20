@@ -17,6 +17,7 @@ Translate request and task state into user-friendly status text.
 - mode: optional, one of single | list
 - request_records: optional list
 - expected_output_format: optional string, one of standard | tickets_concise_table
+- instance_url: optional string
 
 ## Output Contract
 - summary: string
@@ -40,3 +41,8 @@ Translate request and task state into user-friendly status text.
 5. In tickets_concise_table mode, prefer last update date over created date.
 6. Include menu_options with exactly 3 concise, context-aware next actions.
 7. Set free_text_prompt to exactly: "Reply with 1, 2, or 3, or type your own reply."
+8. For every request row in normalized_ticket_rows, id_link_markdown must be a clickable ServiceNow request link.
+9. Build request links using nav_to.do format:
+	- https://<instance>.service-now.com/nav_to.do?uri=sc_request.do?sys_id=<request_sys_id>
+10. If a request row is missing sys_id or instance context, re-resolve those values before rendering.
+11. Do not return unlinked request IDs in tickets_concise_table mode.
