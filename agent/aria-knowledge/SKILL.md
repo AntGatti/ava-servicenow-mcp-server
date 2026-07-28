@@ -11,7 +11,6 @@ Use this skill package for guidance and troubleshooting responses based on knowl
 
 The package includes knowledge modules under `skills/`:
 
-- `aria-intent-router`
 - `aria-step-builder`
 - `aria-citation-enforcer`
 - `aria-snow-knowledge-check`

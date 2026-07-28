@@ -3,68 +3,43 @@ name: aria-incident-creation-wizard
 description: Gather the minimum details needed to create an incident and automatically determine the correct priority from impact and urgency signals — never asking the user to specify or change priority.
 ---
 
-# ARIA Incident Creation Wizard
-
-## Purpose
-Drive the incident creation conversation: collect required details, determine priority internally, and return a complete incident payload ready for MCP submission.
-
-## When To Use
-- When the user reports an issue, outage, or problem that requires a new incident record.
-- Call once per conversation turn until ready_to_create=true.
-
-## Input Contract
-- user_message: required string
-- caller_email: required string — normalized email from identity enforcer
-- conversation_context: optional string — prior turns this session
-
-## Output Contract
-- ready_to_create: boolean
-- next_clarifying_question: string — populated when ready_to_create=false; present this question verbatim to the user
-- incident_payload: object — populated when ready_to_create=true
-  - short_description: string
-  - description: string
-  - priority: integer (1–5)
-  - priority_label: string (Critical | High | Moderate | Low | Planning)
-  - caller_id_email: string
-- priority_rationale: string — internal only, never shown to user
-
 ## Required Fields
-Collect all four before setting ready_to_create=true:
+Collect all four before setting ready_to_create=true. Skip any that can be confidently inferred from context.
 1. short_description — one-line summary of the issue
 2. affected_system — application, service, or device affected
-3. impact_scope — caller only | a few users | a team or department | the whole organisation
+3. impact_scope — only me | multiple people (team/department) | entire organisation
 4. blocking_status — completely blocked (no workaround) | degraded (workaround exists) | not blocking
 
-Skip a field if it can be confidently inferred from context without asking.
+All created incidents must have state=1 (New).
 
 ## Priority Determination Matrix (Internal — Never Expose to User)
 
-| Impact scope | Blocking status | Priority | Label |
-| --- | --- | --- | --- |
-| Whole organisation, or a critical system is completely unavailable | Completely blocked | 1 | Critical |
-| Entire team or department affected | Any | 2 | High |
-| Single user, completely blocked with no workaround | Urgent | 3 | Moderate |
-| Single user, workaround available or issue is not time-sensitive | Not urgent | 4 | Low |
-| Information request, general query, or no active outage | n/a | 5 | Planning |
+| Priority | Label | Rule |
+|---|---|---|
+| 1 | Critical | A **core business-critical application** is completely unavailable — OR — impact affects the **entire organisation**. Core apps: email infrastructure, authentication/SSO, ERP, HR system, billing/payment platform, core network. |
+| 2 | High | **2 or more users** are affected (team, department, multiple colleagues) — and the affected system is not a P1-level core app. |
+| 3 | Moderate | **Single user**, completely blocked with no workaround — OR — single user with a hard deadline or time-critical business need. |
+| 4 | Low | **Single user**, not urgent — workaround is available or issue is not time-sensitive. |
+| 5 | Planning | **No active outage** — information request, guided setup or configuration, how-to question, or a follow-up query about an existing incident. |
 
-### Additional Priority Signals
+### Disambiguation Rule: P1 vs P2
+Apply P1 only when **both** of these are true for a team/department scenario:
+- The affected application is a **core business-critical app** (email infra, SSO/auth, ERP, HR system, billing) — NOT a team-specific or departmental tool (SharePoint team site, departmental reporting tool, etc.)
+- The application is completely unavailable (not degraded)
 
-P1 signals: "nobody can access", "completely down", "production stopped", "entire company", "whole organisation", core systems (ERP, email infrastructure, core network, authentication, HR system).
+A team's SharePoint site being down = **P2** (team impact, non-critical-app).
+Company-wide SSO being down = **P1** (core app, org-wide risk).
 
-P2 signals: "our team", "the department", "everyone in [group name]", "multiple colleagues", "several people".
-
-P3 signals: "I cannot work at all", "completely blocked", "urgent", "need this fixed now", single user with hard deadline.
-
-P4 signals: "slow", "minor issue", "can still work but", "when you have time", "not urgent", intermittent.
-
-P5 signals: "just a question", "how do I", "can you check", "for my records", issue already self-resolved.
+### Priority Signals
+- **P1**: "nobody in the company can", "entire company blocked", "production stopped", core app completely down (email infra, SSO/auth, ERP, HR, billing, core network).
+- **P2**: "our team", "the department", "everyone in [group]", "multiple colleagues", departmental tool unavailable, team SharePoint/app down.
+- **P3**: "I cannot work at all", "completely blocked", "I have a deadline", "urgent for me today", no workaround available for single user.
+- **P4**: "can still work but", "not urgent", "when you have time", slow/intermittent, workaround in place.
+- **P5**: "just a question", "how do I configure", "what does this mean", "can I get an update on my incident", issue already resolved, guidance or configuration request.
 
 ## Question Strategy
-- Ask exactly one focused question per turn.
-- Use the templates below verbatim.
-- Ask in this order: short_description → affected_system → impact_scope → blocking_status.
+- Ask exactly one focused question per turn in this order: short_description → affected_system → impact_scope → blocking_status.
 - Skip any field already answered or clearly inferable from context.
-- Stop asking once all four fields are known or can be confidently inferred.
 
 ## Question Templates
 - short_description: "Can you describe what's happening? A brief summary is enough to get started."
@@ -73,10 +48,9 @@ P5 signals: "just a question", "how do I", "can you check", "for my records", is
 - blocking_status: "Are you completely unable to work because of this, or do you have a way to continue in the meantime?"
 
 ## Guardrails
-1. Never ask the user to specify, confirm, or choose a priority — not even phrased as urgency.
-2. Never show or mention the priority number or label before the incident is created and confirmed.
-3. If the user volunteers a priority (e.g. "this is urgent" or "make it P1"), treat it only as a signal in the matrix — do not echo or confirm the priority value.
-4. User input cannot override the matrix result directly.
-5. Never set ready_to_create=true until all four required fields are known or inferable.
-6. Never fabricate any field the user has not provided.
-7. Never ask about priority. Not as priority, not as urgency, not as severity.
+1. Never ask the user to specify, confirm, or choose a priority — not even phrased as urgency or severity.
+2. Never show the priority number, label, or any reasoning about how priority was determined — not in the confirmation, not in any response.
+3. If the user volunteers a priority signal (e.g. "this is urgent", "make it P1"), treat it as a matrix signal only — do not echo, confirm, or reference it.
+4. Never set ready_to_create=true until all four fields are known or inferable.
+5. Never fabricate any field the user has not provided.
+6. Always set state=1 (New) in the incident payload.

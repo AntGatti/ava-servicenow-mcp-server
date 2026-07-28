@@ -15,6 +15,9 @@ skills:
   - file: agent/aria-request/skills/catalog-matcher/SKILL.md
     name: aria-request-catalog-matcher
     description: Find the best user-facing catalog item by meaning and filter out technical or admin-only entries.
+  - file: agent/aria-request/skills/catalog-item-detail/SKILL.md
+    name: aria-request-catalog-item-detail
+    description: Fetch and display full catalog item details including description, included items, and configurable options when a user asks for more information about a specific catalog item.
   - file: agent/aria-request/skills/order-validator/SKILL.md
     name: aria-request-order-validator
     description: Verify required request details and confirm the approved ordering path before creation.

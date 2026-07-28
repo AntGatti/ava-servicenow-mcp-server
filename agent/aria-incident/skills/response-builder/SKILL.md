@@ -3,29 +3,16 @@ name: aria-incident-response-builder
 description: Render compact, user-friendly incident cards and tables for single incident and incident list responses.
 ---
 
-# ARIA Incident Response Builder
+## Status Mapping
+1 → New | 2 → In Progress | 3 → On Hold | 6 → Resolved | 7 → Closed | 8 → Canceled | 99 → AI Resolved
+Unknown value → Unknown (<value>)
 
-## Purpose
-Create concise, readable outputs for incident information and incident list requests.
+## Date Formatting
+- Default: date only — e.g. 15 July 2026. Never include time unless user explicitly asks.
+- If time is requested and timezone is unknown, ask: "To show the time correctly, which city are you in?"
+- Once timezone is derived, reuse for the rest of the conversation.
 
-## When To Use
-- After data retrieval, identity enforcement, state mapping, and date formatting.
-
-## Input Contract
-- mode: required, one of single | list
-- incidents: required list
-- instance_url: required string
-- expected_output_format: optional string, one of standard | tickets_concise_table
-- include_latest_update: optional boolean
-- latest_update: optional string
-- include_activity_summary: optional boolean
-- activity_summary: optional string
-
-## Output Contract
-- rendered_response: required markdown text
-- normalized_ticket_rows: optional list for orchestrator ticket overview mode
-
-## Single Incident Layout (Mandatory)
+## Single Incident Layout
 - Identifier (clickable incident link)
 - Opened date
 - Status
@@ -36,39 +23,24 @@ Create concise, readable outputs for incident information and incident list requ
 - Latest Update
 - Activity Summary
 
-## List Layout (Mandatory)
-- Columns only:
-  - Incident ID (clickable)
-  - Short description
-  - Status description
-  - Created date
-- Do not include priority.
+## List Layout
+Columns (exact, no additions): Incident ID (clickable) | Short description | Status | Created date
+- No priority column, no assigned-to column, no extra fields. Max 10 rows.
+- If empty: state clearly and include the incidents landing page link.
 
-## Ticket Overview List Layout (Mandatory)
-- Use this layout only when expected_output_format=tickets_concise_table.
-- Columns only:
-   - Type (fixed value: Incident)
-   - ID (clickable)
-   - Short description
-   - Status
-   - Last update date
-- Produce normalized_ticket_rows with this schema per row:
-   - type: Incident
-   - id_text: incident number
-   - id_link_markdown: clickable incident link markdown
-   - short_description: plain language short description
-   - status: user-friendly status label
-   - last_update_date: date-only friendly format
+## Ticket Overview Layout
+Use only when expected_output_format=tickets_concise_table:
+Columns: Type (Incident) | ID (clickable) | Short description | Status | Last update date
+Produce normalized_ticket_rows per row: type, id_text, id_link_markdown, short_description, status, last_update_date.
+
+## Link Format
+- Preferred (sys_id known): `https://<instance>.service-now.com/nav_to.do?uri=incident.do?sys_id=<incident_sys_id>`
+- Fallback (sys_id unknown, number only): `https://<instance>.service-now.com/now/nav/ui/classic/params/target/incident.do%3Fsysparm_query%3Dnumber%3D<incident_number>`
+- Incidents list: `https://<instance>.service-now.com/nav_to.do?uri=incident_list.do`
 
 ## Rules
-1. Use compact, easy-to-scan formatting.
-2. Avoid internal field names in user output.
-3. For single incident mode, always include latest update and activity summary sections.
-4. Always build links with nav_to.do format:
-   - https://<instance>.service-now.com/nav_to.do?uri=incident.do?sys_id=<incident_sys_id>
-5. Include incidents landing page link when useful:
-   - https://<instance>.service-now.com/nav_to.do?uri=incident_list.do
-6. If list is empty, clearly state no incidents were found and provide landing page link.
-7. When expected_output_format=tickets_concise_table, prefer last update date over created date.
-8. Always render incident identifiers as clickable links; do not return unlinked incident IDs.
-9. If incident sys_id or instance_url is missing, re-resolve required link inputs before rendering.
+1. **Every incident number (INCxxxxxxx) anywhere in the response — including inline text, confirmations, related-to references, and summaries — must be a clickable markdown link.** No exceptions.
+2. Use the preferred link format when sys_id is available; use the fallback number-based format otherwise. Never leave an incident number as plain text.
+3. Avoid internal field names in user output.
+4. Keep formatting compact and easy to scan.
+5. In tickets_concise_table mode, use last update date instead of created date.

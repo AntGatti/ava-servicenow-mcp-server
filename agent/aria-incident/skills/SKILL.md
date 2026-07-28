@@ -9,15 +9,12 @@ skills:
   - file: agent/aria-incident/skills/identity-enforcer/SKILL.md
     name: aria-incident-identity-enforcer
     description: Enforce end-user email as a mandatory key for incident operations and prevent cross-user data exposure.
-  - file: agent/aria-incident/skills/status-mapper/SKILL.md
-    name: aria-incident-status-mapper
-    description: Convert raw incident state values into user-friendly status labels with a safe unknown fallback.
-  - file: agent/aria-incident/skills/date-formatter/SKILL.md
-    name: aria-date-formatter
-    description: Format incident dates in user-friendly style with date-only default and optional time based on explicit user request.
+  - file: agent/aria-incident/skills/incident-list/SKILL.md
+    name: aria-incident-list
+    description: Retrieve the user's top 10 open incidents with total open count in a single optimised pass. Open = any state except Resolved (6) and Closed (7).
   - file: agent/aria-incident/skills/work-note-summarizer/SKILL.md
     name: aria-work-note-summarizer
-    description: Build a plain-language Work Note Summary from incident journal entries and highlight current progress or resolution.
+    description: Build a plain-language activity stream summary from comments, work notes, and field updates with latest update first.
   - file: agent/aria-incident/skills/response-builder/SKILL.md
     name: aria-incident-response-builder
     description: Render compact, user-friendly incident cards and tables for single incident and incident list responses.

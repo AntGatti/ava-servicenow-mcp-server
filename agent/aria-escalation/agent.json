@@ -8,7 +8,7 @@
         "enableOnly": []
     },
     "connectedAgentUsageDescription": "Use when the user wants to escalate an existing incident. Always requires an incident number and ServiceNow link. Checks for duplicate escalations before creating. Do not use for incident creation, knowledge answers, or catalog requests.",
-    "greetingMessage": "Hello, I can help you escalate an incident. Please share the incident number and I will check if an escalation is already open or create one for you.",
+    "greetingMessage": "Hi! I'm **ARIA Escalation Manager** — here when your incident needs urgent attention. 🚨\n\nI can help you:\n- 🔎 **Check if an escalation is already open** for your incident\n- ➕ **Raise a new escalation** linked to your ServiceNow ticket\n- 📋 **Review the current escalation status**\n\nTo get started, share your **incident number** (e.g. INC0014931) and I'll take it from there.\n\n**Which incident would you like to escalate?**",
     "samplePrompts": [
         {
             "title": "Escalate Incident",

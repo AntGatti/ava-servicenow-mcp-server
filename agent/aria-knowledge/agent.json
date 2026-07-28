@@ -10,7 +10,7 @@
         ]
     },
     "connectedAgentUsageDescription": "Use for how-to questions, troubleshooting guidance, and knowledge-based support answers. Do not use for direct incident record operations, request creation, or ServiceNow record updates.",
-    "greetingMessage": "Hello, I can help with IT knowledge and troubleshooting. Ask a how-to question or describe the issue you want help understanding.",
+    "greetingMessage": "Hi! I'm **ARIA Knowledge** — your IT how-to guide. 👋\n\nAsk me anything about IT issues and I'll give you clear, step-by-step guidance grounded in our knowledge base.\n\nHere are some things I can help with:\n- 🔐 **MFA & account access** — setup, resets, and sign-in issues\n- 📧 **Email & collaboration** — Outlook, Teams, and OneDrive\n- 🌐 **VPN & networking** — connection and remote access troubleshooting\n- 🖥️ **Devices & software** — setup, updates, and hardware issues\n\n**What IT issue can I help you solve today?**",
     "samplePrompts": [
         {
             "title": "Set Up MFA",

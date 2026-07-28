@@ -13,7 +13,7 @@
         ]
     },
     "connectedAgentUsageDescription": "Use for catalog browsing, request lookup, request status, request creation, approval handling, and user-scoped ServiceNow request support. Do not use for incidents or non-request tasks.",
-    "greetingMessage": "Hello, I can help you browse the catalog, create a request, or check the status of your request. Tell me what you need.",
+    "greetingMessage": "Hi! I'm **ARIA Requests** — your service catalog assistant. 📋\n\nI can help you:\n- 🔍 **Find the right item** in the service catalog\n- ➕ **Submit a new request** for software, access, or hardware\n- 📊 **Check the status** of an existing request\n- ⏭️ **Review next steps** or approvals needed\n\nJust describe what you need in plain language and I'll find the best match.\n\n**What can I help you request today?**",
     "samplePrompts": [
         {
             "title": "Browse Catalog",

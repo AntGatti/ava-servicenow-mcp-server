@@ -6,9 +6,6 @@ description: Manifest for ARIA Knowledge skills package. Use for skill discovery
 manifest_version: 1
 agent: aria-knowledge
 skills:
-  - file: agent/aria-knowledge/skills/intent-router/SKILL.md
-    name: aria-intent-router
-    description: Classify the user request into one support domain, set confidence, and choose the next action for knowledge or incident routing.
   - file: agent/aria-knowledge/skills/step-builder/SKILL.md
     name: aria-step-builder
     description: Convert grounded troubleshooting content into compact, user-friendly step-by-step guidance with clear outcomes.

@@ -9,19 +9,21 @@ description: Create a new escalation request in the SharePoint Escalation Reques
 Create escalation requests with the correct metadata in the SharePoint Escalation Requests list. Skip the pre-check query — attempt creation directly and handle duplicate errors gracefully.
 
 ## When To Use
-- After identity enforcement and incident prerequisite check.
+- After identity enforcement and after all required fields have been collected by the agent.
 
 ## SharePoint Target
-- Site: avashowcase.sharepoint.com/sites/SampleITSupport
-- List: Escalation Requests
+- Site URL: https://avashowcase.sharepoint.com/sites/SampleITSupport
+- List name: Escalation Requests
+- List URL: https://avashowcase.sharepoint.com/sites/SampleITSupport/Lists/Escalation%20Requests/AllItems.aspx
 - Tool: Work IQ SharePoint
+- Tool action: createListItem
 
 ## Input Contract
 - incident_number: required string — e.g. INC0014931
 - incident_link: required string — full ServiceNow URL for the incident
+- escalation_description: required string — reason for escalation collected from user
 - normalized_user_email: required string — from identity enforcer
-- caller_display_name: optional string — used as Operator
-- escalation_description: optional string — reason for escalation; defaults to "Escalation requested for [incident_number]"
+- caller_display_name: optional string — display name from identity enforcer, used as Operator
 
 ## Output Contract
 - action_taken: created | already_escalated | missing_incident_info
@@ -35,17 +37,25 @@ Create escalation requests with the correct metadata in the SharePoint Escalatio
   - sharepoint_item_url: string (when available)
 - user_message: required string
 
+## SharePoint Field Mapping
+
+| SharePoint Column | Value | Required |
+|---|---|---|
+| Title | escalation_description (truncated to ~100 chars if needed) | Yes |
+| Description | escalation_description (full text) | Yes |
+| Incident | incident_number | Yes |
+| Incident Link | incident_link | Yes |
+| Operator | caller_display_name | No |
+| Status | Created (always) | Yes |
+
 ## Execution Steps
-1. Validate incident_number and incident_link are present. If either is missing, return action_taken=missing_incident_info.
-2. Attempt to create a new list item with these field values:
-   - Title: escalation_description or "Escalation — [incident_number]"
-   - Description: escalation_description or "Escalation requested for incident [incident_number]"
-   - Incident: incident_number
-   - Incident Link: incident_link
-   - Operator: caller_display_name (if available, otherwise leave blank)
-   - Status: Created
+1. Confirm incident_number, incident_link, and escalation_description are all present. If any is missing, return action_taken=missing_incident_info.
+2. Call Work IQ SharePoint tool `createListItem` with:
+   - Site: https://avashowcase.sharepoint.com/sites/SampleITSupport
+   - List: Escalation Requests
+   - Fields: as per the field mapping table above.
 3. If creation succeeds, return action_taken=created with the new record details.
-4. If creation fails with a duplicate or conflict error, return action_taken=already_escalated with a user-safe message.
+4. If creation fails with a duplicate or conflict error, return action_taken=already_escalated.
 
 ## Rules
 1. Do not run a pre-check query before creating — attempt creation directly.

@@ -21,7 +21,7 @@
         ]
     },
     "connectedAgentUsageDescription": "Use for incident-only requests such as incident lookup, incident status, comments, work notes, assignment, resolution, and user-scoped incident updates. Do not use for knowledge answers, catalog browsing, or request creation.",
-    "greetingMessage": "Hello, I can help you with your incidents. Tell me whether you want to check status, review updates, or take action on an incident.",
+    "greetingMessage": "Hi! I'm **ARIA Incidents** — your incident management assistant. 🎫\n\nI can help you:\n- 📋 **View your open incidents** and their current status\n- 💬 **Add comments or work notes** to an existing ticket\n- 🆕 **Create a new incident** and get it logged right away\n- ✅ **Resolve or close** an incident when the issue is fixed\n\nJust share an incident number or tell me what you need to do.\n\n**What would you like to do with your incident?**",
     "samplePrompts": [
         {
             "title": "My Open Incidents",
