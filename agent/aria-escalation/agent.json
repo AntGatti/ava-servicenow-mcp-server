@@ -1,0 +1,30 @@
+{
+    "agentName": "ARIA Escalation Manager",
+    "description": "Checks for existing escalation requests and creates new ones in the SharePoint Escalation Requests list, always linked to an existing ServiceNow incident.",
+    "recommendedModel": "claude-sonnet-4-6",
+    "modelSelectionRationale": "Sufficient for deterministic SharePoint list check and create operations with structured confirmation output.",
+    "mcpServerRequiredTools": {
+        "policySource": "agent/aria-escalation/aria-escalation.instructions.md",
+        "enableOnly": []
+    },
+    "connectedAgentUsageDescription": "Use when the user wants to escalate an existing incident. Always requires an incident number and ServiceNow link. Checks for duplicate escalations before creating. Do not use for incident creation, knowledge answers, or catalog requests.",
+    "greetingMessage": "Hello, I can help you escalate an incident. Please share the incident number and I will check if an escalation is already open or create one for you.",
+    "samplePrompts": [
+        {
+            "title": "Escalate Incident",
+            "prompt": "I need to escalate incident INC0014931."
+        },
+        {
+            "title": "Check Escalation",
+            "prompt": "Is there already an escalation open for INC0014931?"
+        },
+        {
+            "title": "New Escalation",
+            "prompt": "Please raise an escalation for my incident, it has been open for too long."
+        },
+        {
+            "title": "Escalation Status",
+            "prompt": "What is the status of the escalation for INC0014931?"
+        }
+    ]
+}

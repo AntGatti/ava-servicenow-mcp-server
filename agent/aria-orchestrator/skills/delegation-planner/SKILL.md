@@ -42,3 +42,4 @@ Build a routing plan that follows orchestrator delegation order.
 15. For request intent, selected_agents must be [request_agent].
 16. For ticket_overview intent, selected_agents must be [incident_agent, request_agent].
 17. For mixed intent, selected_agents must start with knowledge_agent and then include incident_agent or request_agent as needed.
+18. For escalation intent, selected_agents must be [escalation_agent].

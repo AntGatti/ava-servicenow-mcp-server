@@ -11,7 +11,9 @@ $agents = @(
   "aria-orchestrator",
   "aria-knowledge",
   "aria-incident",
-  "aria-request"
+  "aria-request",
+  "aria-escalation",
+  "shared"
 )
 
 function Convert-ToCompliantSkillName {
@@ -74,7 +76,7 @@ function Resolve-ManifestPath {
   return $null
 }
 
-function Validate-SkillNames {
+function Test-SkillNames {
   param(
     [string]$Agent,
     [string]$AgentPath,
@@ -156,7 +158,7 @@ foreach ($agent in $agents) {
     throw "Missing required skills manifest in: $skillsPath (expected SKILL.md or skills.md)"
   }
 
-  Validate-SkillNames -Agent $agent -AgentPath $agentPath -Violations $violations
+  Test-SkillNames -Agent $agent -AgentPath $agentPath -Violations $violations
 }
 
 if ($violations.Count -gt 0) {

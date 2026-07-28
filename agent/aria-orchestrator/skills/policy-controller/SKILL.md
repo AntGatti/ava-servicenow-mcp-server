@@ -31,7 +31,7 @@ Enforce all user-visible orchestration policy decisions in one skill to reduce c
 - next_fallback_attempt_count: required number
 
 ## Rules
-1. Allow only connected-agent scope: knowledge, incident, request, mixed, and ticket_overview.
+1. Allow only connected-agent scope: knowledge, incident, request, mixed, ticket_overview, and escalation.
 2. For explicit capability questions, mention only connected-agent capabilities.
 3. If intent is out_of_scope, return out_of_scope_redirect with concise supported-use redirect and shared menu.
 4. If routing_confidence is low and clarification_needed=true, ask one focused clarification question.

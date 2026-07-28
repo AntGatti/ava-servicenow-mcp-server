@@ -27,9 +27,12 @@ skills:
   - file: agent/aria-request/skills/response-redactor/SKILL.md
     name: aria-request-response-redactor
     description: Remove raw technical values from user-facing responses and replace them with safe plain-language text.
-  - file: agent/aria-request/skills/hyperlink-builder/SKILL.md
-    name: aria-request-hyperlink-builder
-    description: Build clickable hyperlinks for requests, tasks, sub-tasks, and catalog items when a safe link exists.
   - file: agent/aria-request/skills/no-match-refusal/SKILL.md
     name: aria-request-no-match-refusal
     description: Produce the polite no-match response when the request is not user-scoped or no valid match exists.
+  - file: agent/aria-incident/skills/date-formatter/SKILL.md
+    name: aria-date-formatter
+    description: Format dates in ServiceNow agent responses with date-only default and optional time based on explicit user request.
+  - file: agent/shared/skills/servicenow-link-builder/SKILL.md
+    name: aria-servicenow-link-builder
+    description: Build correctly formatted ServiceNow deep links for incidents, requests, request items, and catalog items using the active instance URL.

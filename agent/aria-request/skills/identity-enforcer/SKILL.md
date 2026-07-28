@@ -17,13 +17,15 @@ Enforce end-user email scoping for all request lookups and responses using ident
 - user_request: required string
 
 ## Output Contract
-- normalized_email: string
-- scope_status: user_scoped | blocked | missing_email
+- decision: allow | block
+- normalized_user_email: normalized email when decision=allow
+- denial_reason: required when decision=block
+- user_message: safe message for end user
 - user_visible: false
 
 ## Rules
-1. Trim whitespace and lower-case the email.
-2. Treat the end-user email as the required identity filter.
-3. Block any request data that is not associated with the normalized email.
-4. If no email is available in context, return missing_email and fail safely without asking the user to provide it.
-5. Never expose the raw identity decision to the end user.
+1. Trim whitespace and lower-case the email to produce normalized_user_email.
+2. Treat normalized_user_email as the required identity filter for all downstream operations.
+3. Block any request data that is not associated with normalized_user_email.
+4. If no email is available in context, return decision=block and fail safely without asking the user to provide it.
+5. Never expose the raw identity decision or normalized_user_email to the end user.

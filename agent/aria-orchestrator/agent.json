@@ -7,8 +7,8 @@
         "policySource": "agent/aria-orchestrator/aria-orchestrator.instructions.md",
         "enableOnly": []
     },
-    "connectedAgentUsageDescription": "Use for routing and delegation across connected ARIA agents when the correct target capability must be selected. Supports Knowledge, Incident, and Request routing, plus a combined tickets overview for generic ticket asks. Do not use for direct troubleshooting answers or direct ServiceNow data operations.",
-    "greetingMessage": "Hello, I can route your request to the right ARIA capability. Tell me if you need knowledge guidance, incident help, or request support.",
+    "connectedAgentUsageDescription": "Use for routing and delegation across connected ARIA agents when the correct target capability must be selected. Supports Knowledge, Incident, Request, and Escalation routing, plus a combined tickets overview for generic ticket asks. Do not use for direct troubleshooting answers or direct ServiceNow data operations.",
+    "greetingMessage": "Hello, I can route your request to the right ARIA capability. Tell me if you need knowledge guidance, incident help, request support, or to escalate an incident.",
     "samplePrompts": [
         {
             "title": "Issue And Ticket",

@@ -1,12 +1,12 @@
 ---
 name: aria-date-formatter
-description: Format incident dates in user-friendly style with date-only default and optional time based on explicit user request.
+description: Format dates in ServiceNow agent responses with date-only default and optional time based on explicit user request.
 ---
 
 # ARIA Date Formatter
 
 ## Purpose
-Enforce consistent date display policy for incident responses.
+Enforce consistent date display policy across ServiceNow agent responses.
 
 ## When To Use
 - Before rendering created/opened/updated dates in user responses.

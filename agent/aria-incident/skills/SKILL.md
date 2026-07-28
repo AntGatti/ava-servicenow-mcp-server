@@ -24,3 +24,9 @@ skills:
   - file: agent/aria-incident/skills/next-step-suggester/SKILL.md
     name: aria-next-step-suggester
     description: Append exactly three relevant next-step options plus the shared menu ending line to every incident response.
+  - file: agent/shared/skills/servicenow-link-builder/SKILL.md
+    name: aria-servicenow-link-builder
+    description: Build correctly formatted ServiceNow deep links for incidents, requests, request items, and catalog items using the active instance URL.
+  - file: agent/aria-incident/skills/creation-wizard/SKILL.md
+    name: aria-incident-creation-wizard
+    description: Gather minimum incident details and automatically determine the correct priority from impact and urgency signals — never asking the user to specify or change priority.

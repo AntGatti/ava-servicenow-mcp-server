@@ -16,11 +16,11 @@ Detect the primary request type for orchestration.
 - conversation_context: optional string
 
 ## Output Contract
-- intent: knowledge | incident | request | mixed | ticket_overview | out_of_scope
+- intent: knowledge | incident | request | mixed | ticket_overview | escalation | out_of_scope
 - confidence: high | medium | low
 - rationale: short sentence
-- next_action: delegate_knowledge | delegate_incident_direct | delegate_request_direct | delegate_mixed | delegate_ticket_overview | refuse_or_redirect | ask_clarification
-- delegate_to: knowledge_agent | incident_agent | request_agent | both | none
+- next_action: delegate_knowledge | delegate_incident_direct | delegate_request_direct | delegate_mixed | delegate_ticket_overview | delegate_escalation | refuse_or_redirect | ask_clarification
+- delegate_to: knowledge_agent | incident_agent | request_agent | escalation_agent | both | none
 - user_visible: false
 
 ## Rules
@@ -36,3 +36,5 @@ Detect the primary request type for orchestration.
 10. When intent is mixed, set next_action=delegate_mixed and delegate_to=both.
 11. When intent is out_of_scope, set next_action=refuse_or_redirect and delegate_to=none.
 12. Use ticket_overview when user asks generic ticket language without explicitly choosing incidents or requests (for example: "show my tickets", "list my open tickets").
+13. When intent is escalation, set next_action=delegate_escalation and delegate_to=escalation_agent.
+14. Use escalation when the user wants to escalate an incident or check an existing escalation (signal words: "escalate", "escalation", "raise an escalation", "this needs escalating", "I need to escalate incident").
