@@ -16,6 +16,10 @@
   [![ServiceNow](https://img.shields.io/badge/ServiceNow-Compatible-00a3ba)](https://www.servicenow.com)
   [![Contract](https://img.shields.io/badge/client%20contract-frozen%20v1-blue)](wiki/06-Governance/Frozen-Contract.md)
 
+  ### 📖 [Read the complete guide in the wiki →](wiki/Home.md)
+
+  Install · configure · all 45 tools · deployment · operations · governance
+
 </div>
 
 ---
@@ -36,7 +40,7 @@
 - [Testing](#testing)
 - [Known limitations](#known-limitations)
 - [Troubleshooting](#troubleshooting)
-- [Documentation](#documentation)
+- [Documentation](#documentation) — **complete guide: [the wiki](wiki/Home.md)**
 - [Acknowledgments](#acknowledgments)
 - [License](#license)
 
@@ -58,6 +62,7 @@ Flow Designer, integration) used for schema hints and discovery.
 | Tables | Generic CRUD on any table; **162** in the curated catalogue |
 | Instances | Unlimited, configured in one file, switched per session |
 | Transports | HTTP + SSE (`src/server.js`), stdio (`src/stdio-server.js`) |
+| Documentation | The [wiki](wiki/Home.md) — complete guide, 19 pages |
 | Server identity | `servicenow-server` v2.0.0, bin `servicenow-mcp-server` |
 | Node.js | 18+ (Docker image builds on Node 22) |
 
