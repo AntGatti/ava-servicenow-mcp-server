@@ -34,14 +34,24 @@ confidential and proprietary information of Avanade Inc. ("Avanade").
    the property of the relevant client and is subject to the confidentiality
    and data protection terms of the applicable client engagement.
 
-4. THIRD-PARTY COMPONENTS
+4. CUSTOM CODE, NOT A PRODUCT
 
-   The Software incorporates third-party open source components, including
-   material derived from a prior MIT-licensed work. Those components remain
-   subject to their own licence terms, which are reproduced in the
-   THIRD-PARTY-NOTICES.md file distributed with the Software. Nothing in
-   this licence limits your rights, or Avanade's obligations, under those
-   third-party licences.
+   The Software is bespoke custom code developed for Avanade internal use
+   and for delivery to Avanade clients under engagement. It is not an
+   Avanade product, service or commercial offering, and nothing in this
+   licence or in any accompanying documentation should be read as presenting
+   it as one.
+
+   Avanade provides no product support, no service levels, no availability
+   commitment and no undertaking to maintain, update, patch or extend the
+   Software, and no commitment to backward compatibility between versions.
+
+   Any party that deploys or adopts the Software accepts responsibility for
+   its ongoing maintenance, including dependency and security updates,
+   testing, and compatibility with ServiceNow platform releases and with the
+   Model Context Protocol clients that connect to it. Where the Software is
+   used in client delivery, responsibility for that maintenance must be
+   agreed explicitly in the applicable engagement contract.
 
 5. NO WARRANTY
 

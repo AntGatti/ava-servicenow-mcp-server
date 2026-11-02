@@ -38,7 +38,6 @@ COPY src/ ./src/
 COPY config/ ./config/
 COPY docs/ ./docs/
 COPY LICENSE ./
-COPY THIRD-PARTY-NOTICES.md ./
 COPY README.md ./
 
 # Create directory for config
