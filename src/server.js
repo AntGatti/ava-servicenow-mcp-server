@@ -13,6 +13,7 @@ import { randomUUID } from 'node:crypto';
 import { ServiceNowClient } from './servicenow-client.js';
 import { createMcpServer } from './mcp-server-consolidated.js';
 import { configManager } from './config-manager.js';
+import { SessionStore, SessionLimitError } from './session-store.js';
 
 // Load environment variables
 dotenv.config();
@@ -20,13 +21,52 @@ dotenv.config();
 // SSE configuration
 const SSE_KEEPALIVE_INTERVAL = parseInt(process.env.SSE_KEEPALIVE_INTERVAL || '15000', 10); // Default: 15 seconds
 
+// Session limits. New settings use the AVANADE_MCP_ prefix so existing
+// SERVICENOW_* configuration keeps working untouched.
+const SESSION_TTL_MS = parseInt(process.env.AVANADE_MCP_SESSION_TTL_MS || '3600000', 10); // Default: 1 hour idle
+const MAX_SESSIONS = parseInt(process.env.AVANADE_MCP_MAX_SESSIONS || '100', 10);
+
 const app = express();
 
-// In-memory session store (sessionId -> {server, transport})
-const sessions = {};
+/**
+ * Build a ServiceNow client dedicated to a single session.
+ *
+ * Every session gets its own client. This is not a micro-optimisation: the
+ * SN-Set-Instance tool retargets a client via client.setInstance(), so a client
+ * shared between sessions means one caller switching to prod silently retargets
+ * every other caller's reads and writes.
+ */
+const createSessionClient = () => {
+  const instance = configManager.getInstanceOrDefault();
+  const client = new ServiceNowClient(instance.url, instance.username, instance.password);
+  client.currentInstanceName = instance.name;
+  return client;
+};
 
-// In-memory streamable session store (mcp-session-id -> {server, transport})
-const streamableSessions = {};
+// Legacy SSE sessions (sessionId -> { server, transport, keepaliveInterval })
+const sessions = new SessionStore({
+  maxSessions: MAX_SESSIONS,
+  ttlMs: SESSION_TTL_MS,
+  onEvict: (id, session) => {
+    if (session.keepaliveInterval) clearInterval(session.keepaliveInterval);
+    try {
+      session.transport?.close?.();
+    } catch { /* already closed */ }
+    console.log(`🧹 Cleaned up SSE session ${id}`);
+  }
+});
+
+// Streamable HTTP sessions (mcp-session-id -> { server, transport })
+const streamableSessions = new SessionStore({
+  maxSessions: MAX_SESSIONS,
+  ttlMs: SESSION_TTL_MS,
+  onEvict: (id, session) => {
+    try {
+      session.transport?.close?.();
+    } catch { /* already closed */ }
+    console.log(`🧹 Cleaned up streamable session ${id}`);
+  }
+});
 
 const readJsonBody = async (req) => {
   const chunks = [];
@@ -46,18 +86,19 @@ const readJsonBody = async (req) => {
   }
 };
 
-// Get default instance configuration
+const sessionLimitResponse = (res, error) => {
+  console.error(`⛔ ${error.message}`);
+  res.status(503).json({
+    error: 'Server at capacity',
+    detail: `Maximum ${error.max} concurrent MCP sessions. Retry shortly.`
+  });
+};
+
+// Default instance, used for startup logging and the health endpoint.
+// Request handling never uses a shared client - see createSessionClient().
 const defaultInstance = configManager.getDefaultInstance();
 console.log(`🔗 Default ServiceNow instance: ${defaultInstance.name} (${defaultInstance.url})`);
 console.log(`💡 Use SN-Set-Instance tool to switch instances during session`);
-
-// Create ServiceNow client with default instance
-const serviceNowClient = new ServiceNowClient(
-  defaultInstance.url,
-  defaultInstance.username,
-  defaultInstance.password
-);
-serviceNowClient.currentInstanceName = defaultInstance.name;
 
 /**
  * GET /mcp - Handle streamable GET (with Mcp-Session-Id) or legacy SSE connection
@@ -67,10 +108,17 @@ app.get('/mcp', async (req, res) => {
     const streamableSessionId = req.headers['mcp-session-id'];
 
     // Streamable HTTP GET flow (standalone SSE stream for existing streamable session)
-    if (streamableSessionId && streamableSessions[streamableSessionId]) {
-      const { transport } = streamableSessions[streamableSessionId];
-      await transport.handleRequest(req, res);
+    const streamableSession = streamableSessionId ? streamableSessions.get(streamableSessionId) : undefined;
+    if (streamableSession) {
+      await streamableSession.transport.handleRequest(req, res);
       return;
+    }
+
+    // Refuse before building anything that writes to the response. Once a
+    // transport has handled a request the headers are committed and a later
+    // capacity failure can no longer be reported as a 503.
+    if (!sessions.canAccept()) {
+      return sessionLimitResponse(res, new SessionLimitError(MAX_SESSIONS));
     }
 
     // SSE-specific headers to prevent buffering and timeouts
@@ -78,15 +126,17 @@ app.get('/mcp', async (req, res) => {
     res.setHeader('X-Accel-Buffering', 'no'); // Disable nginx buffering
     res.setHeader('Connection', 'keep-alive');
 
-    // Disable timeout for SSE endpoint (0 = infinite)
+    // Disable timeout for SSE endpoint (0 = infinite).
+    // An unbounded connection lifetime is only safe because SessionStore caps
+    // the number of concurrent sessions and expires idle ones.
     req.setTimeout(0);
     res.setTimeout(0);
 
     // Create transport and start SSE connection
     const transport = new SSEServerTransport('/mcp', res);
 
-    // Create and configure new MCP server instance
-    const server = await createMcpServer(serviceNowClient);
+    // Create a new MCP server instance with its own ServiceNow client
+    const server = await createMcpServer(createSessionClient());
 
     // Set up keepalive heartbeat to prevent connection timeout
     // Send a comment every N seconds to keep connection alive
@@ -102,18 +152,13 @@ app.get('/mcp', async (req, res) => {
 
     // Set up transport cleanup
     transport.onclose = () => {
-      if (sessions[transport.sessionId]) {
-        clearInterval(keepaliveInterval);
-        delete sessions[transport.sessionId];
-        console.log(`🧹 Cleaned up session ${transport.sessionId}`);
-      }
+      sessions.delete(transport.sessionId);
     };
 
     // Clean up on request close/error
     req.on('close', () => {
       clearInterval(keepaliveInterval);
-      if (sessions[transport.sessionId]) {
-        delete sessions[transport.sessionId];
+      if (sessions.delete(transport.sessionId)) {
         console.log(`🔌 Client disconnected: ${transport.sessionId}`);
       }
     });
@@ -124,8 +169,14 @@ app.get('/mcp', async (req, res) => {
     });
 
     // Store the session
-    sessions[transport.sessionId] = { server, transport, keepaliveInterval };
-    console.log(`🔗 New session established: ${transport.sessionId}`);
+    try {
+      sessions.add(transport.sessionId, { server, transport, keepaliveInterval });
+    } catch (error) {
+      clearInterval(keepaliveInterval);
+      if (error instanceof SessionLimitError) return sessionLimitResponse(res, error);
+      throw error;
+    }
+    console.log(`🔗 New session established: ${transport.sessionId} (${sessions.size} active)`);
 
     // Connect server to transport (connect() starts SSE transport)
     await server.connect(transport);
@@ -147,17 +198,20 @@ app.post('/mcp', async (req, res) => {
     const streamableSessionId = req.headers['mcp-session-id'];
 
     // Legacy SSE flow (query-string session id)
-    if (legacySessionId && sessions[legacySessionId]) {
-      const { transport } = sessions[legacySessionId];
-      await transport.handlePostMessage(req, res);
+    const legacySession = legacySessionId ? sessions.get(legacySessionId) : undefined;
+    if (legacySession) {
+      await legacySession.transport.handlePostMessage(req, res);
       return;
     }
 
     const parsedBody = await readJsonBody(req);
     const isInitialize = parsedBody?.method === 'initialize';
-    const activeStreamableSessionIds = Object.keys(streamableSessions);
+    const existingStreamable = streamableSessionId ? streamableSessions.get(streamableSessionId) : undefined;
 
-    if (isInitialize && streamableSessionId && streamableSessions[streamableSessionId]) {
+    // Re-initialize against an existing session: acknowledge without tearing it
+    // down. serverInfo here must stay identical to the MCP server identity in
+    // mcp-server-consolidated.js - see docs/MIGRATION_CONTRACT.md.
+    if (isInitialize && existingStreamable) {
       res.setHeader('mcp-session-id', streamableSessionId);
       return res.status(200).json({
         jsonrpc: '2.0',
@@ -177,35 +231,41 @@ app.post('/mcp', async (req, res) => {
       });
     }
 
-    if (streamableSessionId && streamableSessions[streamableSessionId] && !isInitialize) {
-      const { transport } = streamableSessions[streamableSessionId];
-      await transport.handleRequest(req, res, parsedBody);
+    if (existingStreamable && !isInitialize) {
+      await existingStreamable.transport.handleRequest(req, res, parsedBody);
       return;
     }
 
-    if (!streamableSessionId && !isInitialize && activeStreamableSessionIds.length === 1) {
-      const fallbackSessionId = activeStreamableSessionIds[0];
-      const { transport } = streamableSessions[fallbackSessionId];
-      await transport.handleRequest(req, res, parsedBody);
-      return;
-    }
-
+    // A non-initialize request with no valid session is rejected outright.
+    //
+    // This previously fell back to "if exactly one session is active, use that
+    // one", which routed an unidentified request straight into another client's
+    // session. There is no safe way to guess which session a request belongs to.
     if (!isInitialize) {
       return res.status(400).json({
         error: 'Invalid or missing session ID'
       });
     }
 
-    // First streamable initialization call (no session header yet)
+    // Refuse before the transport commits response headers, otherwise a
+    // capacity failure cannot be reported and the client is handed a session id
+    // that was never registered.
+    if (!streamableSessions.canAccept()) {
+      return sessionLimitResponse(res, new SessionLimitError(MAX_SESSIONS));
+    }
+
+    // First streamable initialization call.
+    //
+    // The session id is always generated server-side. Honouring a client-supplied
+    // mcp-session-id here let a caller fix the session id in advance.
     const streamableTransport = new StreamableHTTPServerTransport({
-      sessionIdGenerator: () => streamableSessionId || randomUUID()
+      sessionIdGenerator: () => randomUUID()
     });
-    const streamableServer = await createMcpServer(serviceNowClient);
+    const streamableServer = await createMcpServer(createSessionClient());
 
     streamableTransport.onclose = () => {
-      if (streamableTransport.sessionId && streamableSessions[streamableTransport.sessionId]) {
-        delete streamableSessions[streamableTransport.sessionId];
-        console.log(`🧹 Cleaned up streamable session ${streamableTransport.sessionId}`);
+      if (streamableTransport.sessionId) {
+        streamableSessions.delete(streamableTransport.sessionId);
       }
     };
 
@@ -213,16 +273,27 @@ app.post('/mcp', async (req, res) => {
     await streamableTransport.handleRequest(req, res, parsedBody);
 
     if (streamableTransport.sessionId) {
-      streamableSessions[streamableTransport.sessionId] = {
-        server: streamableServer,
-        transport: streamableTransport
-      };
-      console.log(`🔗 New streamable session established: ${streamableTransport.sessionId}`);
+      try {
+        streamableSessions.add(streamableTransport.sessionId, {
+          server: streamableServer,
+          transport: streamableTransport
+        });
+      } catch (error) {
+        if (error instanceof SessionLimitError) {
+          try { streamableTransport.close(); } catch { /* ignore */ }
+          if (!res.headersSent) return sessionLimitResponse(res, error);
+          return;
+        }
+        throw error;
+      }
+      console.log(`🔗 New streamable session established: ${streamableTransport.sessionId} (${streamableSessions.size} active)`);
     }
 
   } catch (error) {
     console.error('❌ Error handling POST message:', error);
-    res.status(500).json({ error: 'Failed to process message' });
+    if (!res.headersSent) {
+      res.status(500).json({ error: 'Failed to process message' });
+    }
   }
 });
 
@@ -232,18 +303,20 @@ app.post('/mcp', async (req, res) => {
 app.delete('/mcp', async (req, res) => {
   try {
     const streamableSessionId = req.headers['mcp-session-id'];
+    const session = streamableSessionId ? streamableSessions.get(streamableSessionId) : undefined;
 
-    if (!streamableSessionId || !streamableSessions[streamableSessionId]) {
+    if (!session) {
       return res.status(404).json({ error: 'Invalid or missing session ID' });
     }
 
-    const { transport } = streamableSessions[streamableSessionId];
-    await transport.handleRequest(req, res);
-    delete streamableSessions[streamableSessionId];
+    await session.transport.handleRequest(req, res);
+    streamableSessions.delete(streamableSessionId);
     console.log(`🔌 Streamable session closed: ${streamableSessionId}`);
   } catch (error) {
     console.error('❌ Error handling streamable DELETE message:', error);
-    res.status(500).json({ error: 'Failed to process streamable DELETE request' });
+    if (!res.headersSent) {
+      res.status(500).json({ error: 'Failed to process streamable DELETE request' });
+    }
   }
 });
 
@@ -275,6 +348,7 @@ app.listen(PORT, () => {
   console.log(`🔌 MCP SSE endpoint: http://localhost:${PORT}/mcp`);
   console.log(`📋 Available instances: http://localhost:${PORT}/instances`);
   console.log(`💓 SSE keepalive interval: ${SSE_KEEPALIVE_INTERVAL}ms`);
+  console.log(`🧮 Session limits: max ${MAX_SESSIONS}, idle TTL ${SESSION_TTL_MS}ms`);
 
   if (process.env.DEBUG === 'true') {
     console.log('🐛 Debug mode enabled');
