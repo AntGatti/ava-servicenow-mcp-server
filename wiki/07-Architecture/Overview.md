@@ -87,18 +87,3 @@ Both HTTP transports share `/mcp` and are distinguished by headers. See
 - **No structured logging or audit trail.**
 - Instance switching inside `resources.js` uses mutate-and-restore, which is not safe
   for concurrent requests within a session.
-
-## Provenance
-
-A fork of an MIT-licensed open source project, now Avanade proprietary with substantial
-additions. See [LICENSE](../../LICENSE).
-
-> ⚠️ **Open item.** The MIT licence requires its copyright and permission notice to be
-> retained in derivative works. A `THIRD-PARTY-NOTICES.md` carrying that attribution was
-> added during the conversion and has since been deleted from the working tree. Until
-> legal confirms the position, treat upstream attribution as an unresolved obligation
-> rather than a settled one. The file is recoverable from git history (commit
-> `6fcc451`).
-
-The client-facing surface is deliberately unchanged from the upstream server so existing
-deployments migrate without edits — see [Frozen Contract](../06-Governance/Frozen-Contract.md).
