@@ -1,8 +1,8 @@
 /**
- * ServiceNow MCP Server - Script Synchronization
+ * Avanade ServiceNow MCP Server - Script Synchronization
  *
- * Copyright (c) 2025 Happy Technologies LLC
- * Licensed under the MIT License - see LICENSE file for details
+ * Copyright (c) 2026 Avanade Inc. All rights reserved.
+ * Proprietary and confidential. See LICENSE for terms.
  *
  * Enables local script development with Git integration.
  * Supports bidirectional sync between local files and ServiceNow.

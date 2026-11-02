@@ -1,15 +1,15 @@
 <div align="center">
-  <img src="assets/logo.svg" alt="ServiceNow MCP Server" width="200"/>
+  <img src="assets/logo.svg" alt="Avanade ServiceNow MCP Server" width="200"/>
 
-  # ServiceNow MCP Server v2.1.5
+  # Avanade ServiceNow MCP Server v3.0.0
 
   **Multi-Instance Intelligent Architecture**
 
   A revolutionary metadata-driven ServiceNow MCP server that supports multiple ServiceNow instances simultaneously with automatic schema discovery and optimized tool generation.
 
-  *Part of the [Happy Technologies](https://happy-tech.biz) composable service ecosystem*
+  *An Avanade internal engineering asset*
 
-  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+  [![License: Avanade Proprietary](https://img.shields.io/badge/License-Avanade%20Proprietary-C8102E.svg)](LICENSE)
   [![Node.js Version](https://img.shields.io/badge/node-%3E%3D18-brightgreen)](https://nodejs.org)
   [![ServiceNow](https://img.shields.io/badge/ServiceNow-Compatible-00a3ba)](https://www.servicenow.com)
 
@@ -63,7 +63,7 @@
 1. **Clone and install:**
    ```bash
    git clone <repository-url>
-   cd mcp-servicenow-nodejs
+   cd servicenow-mcp-server
    npm install
    ```
 
@@ -408,8 +408,8 @@ Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_
   "mcpServers": {
     "servicenow-nodejs": {
       "command": "node",
-      "args": ["/Users/YOUR_USERNAME/WebstormProjects/mcp-servicenow-nodejs/src/stdio-server.js"],
-      "cwd": "/Users/YOUR_USERNAME/WebstormProjects/mcp-servicenow-nodejs",
+      "args": ["/path/to/servicenow-mcp-server/src/stdio-server.js"],
+      "cwd": "/path/to/servicenow-mcp-server",
       "env": {
         "SERVICENOW_INSTANCE_URL": "https://your-instance.service-now.com",
         "SERVICENOW_USERNAME": "your-username",
@@ -573,12 +573,10 @@ We encourage the community to explore both implementations and contribute to adv
 
 ## 📄 License
 
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+**Avanade Proprietary — Internal Use Only.** See the [LICENSE](LICENSE) file for the full terms.
 
-**Copyright © 2025 Happy Technologies LLC**
+**Copyright © 2026 Avanade Inc. All rights reserved.**
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+This software is the confidential and proprietary information of Avanade Inc. It is licensed for internal Avanade business purposes and for delivery of services to Avanade clients under a valid engagement. It must not be published to any public repository, package registry or container registry.
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+Third-party components, including material derived from a prior MIT-licensed work, remain subject to their own licence terms. See [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).

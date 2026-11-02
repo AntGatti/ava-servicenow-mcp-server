@@ -1,6 +1,6 @@
-# ServiceNow MCP Server - Docker Image
-# Author: nczitzer
-# Part of Happy Technologies composable service ecosystem
+# Avanade ServiceNow MCP Server - Docker Image
+# Copyright (c) 2026 Avanade Inc. All rights reserved.
+# Proprietary and confidential. See LICENSE for terms.
 
 # Stage 1: Dependencies
 FROM node:22-alpine AS dependencies
@@ -38,6 +38,7 @@ COPY src/ ./src/
 COPY config/ ./config/
 COPY docs/ ./docs/
 COPY LICENSE ./
+COPY THIRD-PARTY-NOTICES.md ./
 COPY README.md ./
 
 # Create directory for config

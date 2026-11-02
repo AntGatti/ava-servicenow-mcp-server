@@ -1,12 +1,12 @@
 version: '3.8'
 
 services:
-  servicenow-mcp-server:
-    image: nczitzer/mcp-servicenow-nodejs:latest
+  avanade-servicenow-mcp-server:
+    image: avanade/servicenow-mcp-server:latest
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: servicenow-mcp-server
+    container_name: avanade-servicenow-mcp-server
     ports:
       - "3000:3000"
     environment:

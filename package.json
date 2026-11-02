@@ -1,10 +1,10 @@
 {
-  "name": "servicenow-mcp-server",
-  "version": "2.1.7",
-  "description": "Multi-instance ServiceNow MCP server with 40+ tools, natural language search, and local script development",
+  "name": "@avanade/servicenow-mcp-server",
+  "version": "3.0.0",
+  "description": "Avanade ServiceNow MCP Server - multi-instance ServiceNow MCP server with 45 tools, natural language search, and local script development",
   "main": "src/server.js",
   "type": "module",
-  "mcpName": "io.github.nickzitzer/servicenow-nodejs",
+  "private": true,
   "bin": {
     "servicenow-mcp-server": "./src/stdio-server.js"
   },
@@ -17,7 +17,9 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --watch",
     "test:coverage": "NODE_OPTIONS=--experimental-vm-modules jest --coverage",
-    "test:verbose": "NODE_OPTIONS=--experimental-vm-modules jest --verbose"
+    "test:verbose": "NODE_OPTIONS=--experimental-vm-modules jest --verbose",
+    "contract:verify": "node scripts/verify-tool-contract.js",
+    "contract:write": "node scripts/verify-tool-contract.js --write"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.25.3",
@@ -32,29 +34,23 @@
     "jest": "^25.0.0",
     "nodemon": "^3.0.2"
   },
-  "author": "Happy Technologies LLC",
-  "license": "MIT",
+  "author": "Avanade Inc.",
+  "license": "UNLICENSED",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Happy-Technologies-LLC/mcp-servicenow-nodejs.git"
+    "url": "https://github.com/ava-innersource/servicenow-mcp-server.git"
   },
-  "bugs": {
-    "url": "https://github.com/Happy-Technologies-LLC/mcp-servicenow-nodejs/issues"
-  },
-  "homepage": "https://github.com/Happy-Technologies-LLC/mcp-servicenow-nodejs#readme",
   "keywords": [
+    "avanade",
     "mcp",
     "modelcontextprotocol",
     "servicenow",
     "itsm",
-    "claude",
-    "ai",
     "automation",
     "rest-api",
     "service-catalog",
     "cmdb",
     "workflow",
-    "flow-designer",
     "update-set",
     "multi-instance"
   ]

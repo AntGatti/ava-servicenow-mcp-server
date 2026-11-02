@@ -1,8 +1,8 @@
 /**
- * ServiceNow MCP Server - MCP Resources Implementation
+ * Avanade ServiceNow MCP Server - MCP Resources Implementation
  *
- * Copyright (c) 2025 Happy Technologies LLC
- * Licensed under the MIT License - see LICENSE file for details
+ * Copyright (c) 2026 Avanade Inc. All rights reserved.
+ * Proprietary and confidential. See LICENSE for terms.
  *
  * Provides read-only, cacheable access to ServiceNow data
  */
