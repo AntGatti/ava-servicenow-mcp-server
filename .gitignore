@@ -40,3 +40,6 @@ build/
 # Test coverage
 coverage/
 .nyc_output/
+# Legacy documentation - kept locally, superseded by wiki/
+# Removed from version control: contained a leaked credential and real instance hostnames.
+docs/
