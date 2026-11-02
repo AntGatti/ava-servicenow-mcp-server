@@ -2857,7 +2857,7 @@ The problem has been closed successfully.`
     if (uri === 'servicenow://instance') {
       const config = {
         server_info: {
-          name: 'ServiceNow MCP Server (Consolidated)',
+          name: 'Avanade ServiceNow MCP Server (Consolidated)',
           version: '2.0.0',
           description: 'Consolidated ServiceNow integration with metadata-driven schema lookups'
         },

@@ -184,13 +184,13 @@ export function createResourceHandlers(serviceNowClient, configManager, tableMet
             default: instanceConfig.default || false
           },
           server_info: {
-            name: 'ServiceNow MCP Server',
+            name: 'Avanade ServiceNow MCP Server',
             version: '2.0.0',
-            description: 'Multi-instance ServiceNow MCP server with resources'
+            description: 'Avanade multi-instance ServiceNow MCP server with resources'
           },
           capabilities: {
             total_tables: Object.keys(tableMetadata).length,
-            total_tools: 34,
+            total_tools: 45,
             operations: ['create', 'read', 'update', 'query', 'batch', 'workflow'],
             features: ['multi_instance', 'resources', 'background_scripts', 'update_sets']
           }

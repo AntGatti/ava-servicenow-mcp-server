@@ -41,10 +41,10 @@ async function main() {
     // Connect server to transport
     await server.connect(transport);
 
-    console.error('ServiceNow MCP Server (stdio) started successfully');
+    console.error('Avanade ServiceNow MCP Server (stdio) started successfully');
     console.error(`Instance: ${instance.name} - ${instance.url}`);
   } catch (error) {
-    console.error('Failed to start ServiceNow MCP Server:', error);
+    console.error('Failed to start Avanade ServiceNow MCP Server:', error);
     process.exit(1);
   }
 }

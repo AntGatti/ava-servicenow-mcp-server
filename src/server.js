@@ -270,7 +270,7 @@ app.get('/instances', (req, res) => {
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`🚀 ServiceNow MCP Server listening on port ${PORT}`);
+  console.log(`🚀 Avanade ServiceNow MCP Server listening on port ${PORT}`);
   console.log(`📊 Health check: http://localhost:${PORT}/health`);
   console.log(`🔌 MCP SSE endpoint: http://localhost:${PORT}/mcp`);
   console.log(`📋 Available instances: http://localhost:${PORT}/instances`);
