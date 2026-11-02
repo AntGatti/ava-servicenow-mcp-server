@@ -1,7 +1,7 @@
 {
   "name": "@avanade/servicenow-mcp-server",
-  "version": "3.0.0",
-  "description": "Avanade ServiceNow MCP Server - multi-instance ServiceNow MCP server with 45 tools, natural language search, and local script development",
+  "version": "2.0.0",
+  "description": "Avanade ServiceNow MCP Server - multi-instance ServiceNow MCP server with 45 tools, natural language search and automated background script execution",
   "main": "src/server.js",
   "type": "module",
   "private": true,
@@ -20,7 +20,8 @@
     "test:verbose": "node --experimental-vm-modules node_modules/jest/bin/jest.js --verbose",
     "contract:verify": "node scripts/verify-tool-contract.js",
     "contract:write": "node scripts/verify-tool-contract.js --write",
-    "smoke:tools": "node scripts/smoke-tool-surface.js"
+    "smoke:tools": "node scripts/smoke-tool-surface.js",
+    "docs:tools": "node scripts/generate-tool-reference.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.32.2",
