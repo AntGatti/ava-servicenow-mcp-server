@@ -50,7 +50,7 @@ export class ConfigManager {
     }
 
     this.instances = [{
-      name: 'default',
+      name: process.env.SERVICENOW_INSTANCE_NAME || 'default',
       url: process.env.SERVICENOW_INSTANCE_URL,
       username: process.env.SERVICENOW_USERNAME,
       password: process.env.SERVICENOW_PASSWORD,
