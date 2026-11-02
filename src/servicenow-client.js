@@ -185,9 +185,52 @@ gs.info('✅ Update set changed to: ${updateSet.name}');`;
   }
 
   async getCurrentUpdateSet() {
-    // Get the current update set preference
-    const response = await this.client.get(`/api/now/ui/preferences/sys_update_set`);
-    return response.data;
+    // The current update set is a per-user preference, not a REST resource:
+    // /api/now/ui/preferences/<name> is not a valid endpoint and returns 400.
+    // setCurrentUpdateSet() writes a sys_user_preference row named
+    // "sys_update_set", so read that same row back. The javascript: token is
+    // evaluated server-side, which resolves the authenticated user without a
+    // separate sys_user lookup.
+    const prefs = await this.getRecords('sys_user_preference', {
+      sysparm_query: 'name=sys_update_set^user=javascript:gs.getUserID()',
+      sysparm_fields: 'value',
+      sysparm_limit: 1
+    });
+
+    const updateSetSysId = prefs[0]?.value;
+
+    if (!updateSetSysId) {
+      return {
+        current_update_set: null,
+        message:
+          'No current update set preference is set for this user. ServiceNow will ' +
+          'capture changes into the Default update set of the active application.'
+      };
+    }
+
+    let updateSet;
+    try {
+      updateSet = await this.getRecord('sys_update_set', updateSetSysId, {
+        sysparm_fields: 'sys_id,name,state,description,application,sys_created_by,sys_updated_on'
+      });
+    } catch (error) {
+      return {
+        current_update_set: null,
+        message: `The user preference points at update set ${updateSetSysId}, which could not be read: ${error.message}`
+      };
+    }
+
+    return {
+      current_update_set: {
+        sys_id: updateSet.sys_id,
+        name: updateSet.name,
+        state: updateSet.state,
+        description: updateSet.description,
+        application: updateSet.application?.value || updateSet.application,
+        created_by: updateSet.sys_created_by,
+        updated_on: updateSet.sys_updated_on
+      }
+    };
   }
 
   async listUpdateSets(query = {}) {
@@ -1394,23 +1437,85 @@ try {
   }
 
   // Field explanation
-  async explainField(tableName, fieldName, includeExamples = true) {
-    try {
-      const fields = await this.getRecords('sys_dictionary', {
-        sysparm_query: `name=${tableName}^element=${fieldName}`,
+  /**
+   * Resolve a table and its parent tables, most derived first.
+   *
+   * ServiceNow records a field definition once, on the table that introduces
+   * it, so incident.priority is stored in sys_dictionary under name=task.
+   * Any dictionary lookup for a named table must walk this chain or it will
+   * miss every inherited field.
+   *
+   * @param {string} tableName - Table to start from
+   * @param {number} [maxDepth=10] - Guard against cycles and deep hierarchies
+   * @returns {Promise<string[]>} e.g. ["incident", "task"]
+   */
+  async getTableHierarchy(tableName, maxDepth = 10) {
+    const chain = [tableName];
+    let current = tableName;
+
+    for (let depth = 0; depth < maxDepth; depth++) {
+      const rows = await this.getRecords('sys_db_object', {
+        sysparm_query: `name=${current}`,
+        sysparm_fields: 'name,super_class',
         sysparm_limit: 1
       });
 
-      if (fields.length === 0) {
-        throw new Error(`Field ${fieldName} not found in table ${tableName}`);
+      const superClassSysId = rows[0]?.super_class?.value || rows[0]?.super_class;
+      if (!superClassSysId) break;
+
+      let parentName;
+      try {
+        const parent = await this.getRecord('sys_db_object', superClassSysId, {
+          sysparm_fields: 'name'
+        });
+        parentName = parent?.name;
+      } catch {
+        break;
       }
 
-      const field = fields[0];
+      if (!parentName || chain.includes(parentName)) break;
+
+      chain.push(parentName);
+      current = parentName;
+    }
+
+    return chain;
+  }
+
+  async explainField(tableName, fieldName, includeExamples = true) {
+    try {
+      // A field is defined once, on the table that introduces it. incident
+      // inherits priority, state, short_description and most other common
+      // fields from task, so querying sys_dictionary for name=<tableName>
+      // alone finds nothing for them.
+      const hierarchy = await this.getTableHierarchy(tableName);
+
+      const matches = await this.getRecords('sys_dictionary', {
+        sysparm_query: `element=${fieldName}^nameIN${hierarchy.join(',')}`,
+        sysparm_limit: hierarchy.length
+      });
+
+      if (matches.length === 0) {
+        throw new Error(
+          `Field ${fieldName} not found in table ${tableName} or its parent tables (${hierarchy.join(' -> ')})`
+        );
+      }
+
+      // A child table may override a parent field. Prefer the most derived
+      // definition, which is the earliest entry in the hierarchy.
+      const tableOf = (row) => row.name?.value || row.name;
+      const field =
+        hierarchy.map((t) => matches.find((m) => tableOf(m) === t)).find(Boolean) || matches[0];
+      const definedOn = tableOf(field);
+      const fieldType = field.internal_type?.value || field.internal_type;
+
       const explanation = {
         field: fieldName,
         table: tableName,
+        defined_on: definedOn,
+        inherited: definedOn !== tableName,
         label: field.column_label,
-        type: field.internal_type?.value || field.internal_type,
+        type: fieldType,
         max_length: field.max_length,
         mandatory: field.mandatory === 'true' || field.mandatory === true,
         read_only: field.read_only === 'true' || field.read_only === true,
@@ -1423,10 +1528,11 @@ try {
         explanation.reference_table = field.reference.value || field.reference;
       }
 
-      // Get choices for choice fields
-      if (field.internal_type === 'choice' || field.internal_type === 'integer') {
+      // Get choices for choice fields. Choices follow the same inheritance
+      // rule as the dictionary entry, so search the whole chain.
+      if (fieldType === 'choice' || fieldType === 'integer') {
         const choices = await this.getRecords('sys_choice', {
-          sysparm_query: `name=${tableName}^element=${fieldName}`,
+          sysparm_query: `element=${fieldName}^nameIN${hierarchy.join(',')}`,
           sysparm_limit: 100
         });
 
@@ -1437,7 +1543,6 @@ try {
           }));
         }
       }
-
       // Known issues for specific fields
       if (tableName === 'catalog_ui_policy_action' && (fieldName === 'ui_policy' || fieldName === 'catalog_variable')) {
         explanation.known_issues = [
