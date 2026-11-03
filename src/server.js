@@ -14,6 +14,8 @@ import { ServiceNowClient } from './servicenow-client.js';
 import { createMcpServer } from './mcp-server-consolidated.js';
 import { configManager } from './config-manager.js';
 import { SessionStore, SessionLimitError } from './session-store.js';
+import { FileKeyStore, DEFAULT_KEYS_FILE } from './api-keys.js';
+import { createAuthMiddleware, resolveAuthMode } from './auth-middleware.js';
 
 // Load environment variables
 dotenv.config();
@@ -27,6 +29,21 @@ const SESSION_TTL_MS = parseInt(process.env.AVANADE_MCP_SESSION_TTL_MS || '36000
 const MAX_SESSIONS = parseInt(process.env.AVANADE_MCP_MAX_SESSIONS || '100', 10);
 
 const app = express();
+
+// API key authentication. Defaults to "off" so existing clients are unaffected
+// until AVANADE_MCP_AUTH_MODE is set to "warn" or "enforce".
+const AUTH_MODE = resolveAuthMode();
+const keyStore = new FileKeyStore({ filePath: process.env.AVANADE_MCP_API_KEYS_FILE || DEFAULT_KEYS_FILE });
+const requireKey = createAuthMiddleware({ store: keyStore, mode: AUTH_MODE });
+console.log(`🔐 Auth mode: ${AUTH_MODE}${AUTH_MODE === 'off' ? '' : ` (${keyStore.size} keys in ${keyStore.filePath})`}`);
+if (AUTH_MODE === 'enforce' && keyStore.size === 0) {
+  console.warn('⚠️  Auth mode is enforce but no API keys exist - every request will be rejected. Run: npm run keys -- create --label <name>');
+}
+
+// /health stays open for Azure and Docker probes, but is the one route that
+// must work without a key.
+app.use('/mcp', requireKey);
+app.use('/instances', requireKey);
 
 /**
  * Build a ServiceNow client dedicated to a single session.
@@ -322,6 +339,11 @@ app.delete('/mcp', async (req, res) => {
 
 // Health check endpoint
 app.get('/health', (req, res) => {
+  // Once auth is enforced this route is unauthenticated, so it stops
+  // disclosing the instance URL.
+  if (AUTH_MODE === 'enforce') {
+    return res.json({ status: 'healthy', timestamp: new Date().toISOString() });
+  }
   res.json({
     status: 'healthy',
     servicenow_instance: defaultInstance.url,

@@ -21,7 +21,8 @@
     "contract:verify": "node scripts/verify-tool-contract.js",
     "contract:write": "node scripts/verify-tool-contract.js --write",
     "smoke:tools": "node scripts/smoke-tool-surface.js",
-    "docs:tools": "node scripts/generate-tool-reference.js"
+    "docs:tools": "node scripts/generate-tool-reference.js",
+    "keys": "node scripts/keys.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.32.2",
