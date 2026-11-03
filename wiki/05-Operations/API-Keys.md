@@ -48,3 +48,18 @@ Header name = `X-API-Key`, Key value = the key.
 A key identifies a client, not a person: ServiceNow still sees the service account
 ([finding 3](../06-Governance/Security-Posture.md)). Key files are per host, so multiple
 replicas need a shared file or a shared store.
+
+## CI/CD (GitHub Actions)
+
+[.github/workflows/deploy-ava-servicenow-mcp.yml](../../.github/workflows/deploy-ava-servicenow-mcp.yml)
+deploys to `app-ava-servicenow-mcp-itn-01` (`rg-ava-servicenow-mcp-itn-01`).
+
+- **Deploy:** runs on push to `main` only when `src/**`, `package.json` or
+  `package-lock.json` change, after tests, `contract:verify` and `smoke:tools`. It then
+  polls `/health`. It can also be run manually with action `deploy`.
+- **Rotate key:** run manually with action `rotate-key` and a `key_label`. It adds a key to
+  the key file on the app and stores the plaintext as repository secret
+  `AVA_MCP_KEY_<run number>`. GitHub secrets cannot be read back, so use the key only from
+  workflows, or create keys with `npm run keys` where you need to see them.
+- **Secrets required:** `AZURE_WEBAPP_PUBLISH_PROFILE_AVA` (publish profile) and
+  `GH_SECRETS_TOKEN` (a PAT allowed to write repository secrets; `GITHUB_TOKEN` cannot).
