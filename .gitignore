@@ -10,6 +10,9 @@ node_modules/
 # ServiceNow instance credentials (DO NOT COMMIT)
 config/servicenow-instances.json
 
+# API key hashes (DO NOT COMMIT)
+config/api-keys.json
+
 # Logs
 logs/
 *.log

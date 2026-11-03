@@ -19,6 +19,7 @@
 **Operations**
 - [Multi-Instance Routing](05-Operations/Multi-Instance-Routing.md)
 - [Permissions and 403s](05-Operations/Permissions-and-403s.md)
+- [API Keys](05-Operations/API-Keys.md)
 - [Troubleshooting](05-Operations/Troubleshooting.md)
 
 **Governance**
