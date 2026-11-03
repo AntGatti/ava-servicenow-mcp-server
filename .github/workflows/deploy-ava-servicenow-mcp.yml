@@ -1,0 +1,122 @@
+name: Deploy AVA ServiceNow MCP
+
+# Deploys to app-ava-servicenow-mcp-itn-01 (rg-ava-servicenow-mcp-itn-01) from main,
+# only when server code changes. Manual runs can also rotate an API key.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'package.json'
+      - 'package-lock.json'
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'What to run'
+        type: choice
+        options: [deploy, rotate-key]
+        default: deploy
+      key_label:
+        description: 'rotate-key: label for the new key, e.g. copilot-studio-prod-v2'
+        type: string
+        required: false
+      key_expires_days:
+        description: 'rotate-key: days until expiry (blank = never)'
+        type: string
+        required: false
+
+env:
+  APP_NAME: app-ava-servicenow-mcp-itn-01
+  NODE_VERSION: '22'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-ava-servicenow-mcp
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || inputs.action == 'deploy')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - run: npm ci
+
+      - name: Tests
+        run: npm test
+
+      - name: Frozen contract
+        run: npm run contract:verify
+
+      - name: Wire surface smoke test
+        run: npm run smoke:tools
+
+      # Ship only what runs in production. Oryx installs dependencies on the app.
+      - name: Package
+        run: zip -qr release.zip src package.json package-lock.json LICENSE
+
+      - name: Deploy
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.APP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_AVA }}
+          package: release.zip
+
+      - name: Verify health
+        run: |
+          for i in $(seq 1 30); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' "https://${APP_NAME}.azurewebsites.net/health" || true)
+            echo "attempt $i: HTTP $code"
+            [ "$code" = "200" ] && exit 0
+            sleep 10
+          done
+          echo "App did not become healthy" >&2
+          exit 1
+
+  rotate-key:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch' && inputs.action == 'rotate-key'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Validate inputs
+        env:
+          LABEL: ${{ inputs.key_label }}
+        run: |
+          if ! printf '%s' "$LABEL" | grep -Eq '^[A-Za-z0-9._-]{3,64}$'; then
+            echo "key_label is required: 3-64 characters from A-Z a-z 0-9 . _ -" >&2
+            exit 1
+          fi
+
+      - name: Add key to the app
+        env:
+          PUBLISH_PROFILE: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_AVA }}
+          KEY_LABEL: ${{ inputs.key_label }}
+          EXPIRES_DAYS: ${{ inputs.key_expires_days }}
+          KEY_OUT_FILE: ${{ runner.temp }}/new-key.txt
+        run: node scripts/ci-rotate-key.js
+
+      # The plaintext key goes straight from the file into a repository secret;
+      # it is never echoed, so it does not appear in the run log.
+      - name: Store key as a repository secret
+        env:
+          GH_TOKEN: ${{ secrets.GH_SECRETS_TOKEN }}
+          SECRET_NAME: AVA_MCP_KEY_${{ github.run_number }}
+        run: |
+          gh secret set "$SECRET_NAME" --repo "$GITHUB_REPOSITORY" < "$RUNNER_TEMP/new-key.txt"
+          rm -f "$RUNNER_TEMP/new-key.txt"
+          echo "Saved the new key as repository secret $SECRET_NAME." >> "$GITHUB_STEP_SUMMARY"
+          echo "GitHub secrets are write-only: workflows can use it by that name, but it cannot be viewed afterwards." >> "$GITHUB_STEP_SUMMARY"
