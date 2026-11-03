@@ -1,0 +1,59 @@
+{
+  "name": "@avanade/servicenow-mcp-server",
+  "version": "2.0.0",
+  "description": "Avanade ServiceNow MCP Server - multi-instance ServiceNow MCP server with 45 tools, natural language search and automated background script execution",
+  "main": "src/server.js",
+  "type": "module",
+  "private": true,
+  "bin": {
+    "servicenow-mcp-server": "./src/stdio-server.js"
+  },
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "stdio": "node src/stdio-server.js",
+    "inspector": "npx @modelcontextprotocol/inspector",
+    "extract-metadata": "node scripts/extract-table-metadata.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
+    "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
+    "test:verbose": "node --experimental-vm-modules node_modules/jest/bin/jest.js --verbose",
+    "contract:verify": "node scripts/verify-tool-contract.js",
+    "contract:write": "node scripts/verify-tool-contract.js --write",
+    "smoke:tools": "node scripts/smoke-tool-surface.js",
+    "docs:tools": "node scripts/generate-tool-reference.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "axios": "^1.21.0",
+    "chokidar": "^4.0.3",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.1",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "jest": "^30.5.2",
+    "nodemon": "^3.0.2"
+  },
+  "author": "Avanade Inc.",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ava-innersource/servicenow-mcp-server.git"
+  },
+  "keywords": [
+    "avanade",
+    "mcp",
+    "modelcontextprotocol",
+    "servicenow",
+    "itsm",
+    "automation",
+    "rest-api",
+    "service-catalog",
+    "cmdb",
+    "workflow",
+    "update-set",
+    "multi-instance"
+  ]
+}

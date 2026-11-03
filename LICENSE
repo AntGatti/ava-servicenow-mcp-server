@@ -1,0 +1,74 @@
+Avanade Proprietary License
+
+Copyright (c) 2026 Avanade Inc. All rights reserved.
+
+This software and associated documentation files (the "Software") are the
+confidential and proprietary information of Avanade Inc. ("Avanade").
+
+1. GRANT OF LICENSE
+
+   Avanade grants employees, contractors and authorised partners of Avanade
+   and its affiliates a non-exclusive, non-transferable, revocable right to
+   use, copy and modify the Software solely for internal Avanade business
+   purposes and for the delivery of services to Avanade clients under a
+   valid engagement.
+
+2. RESTRICTIONS
+
+   Except as expressly permitted in writing by Avanade, you may not:
+
+   (a) distribute, publish, sublicense, sell, rent or lease the Software, or
+       otherwise make the Software available to any third party;
+   (b) publish the Software to any public source code repository, package
+       registry, container registry or model/tool registry;
+   (c) remove or alter any copyright, trademark or other proprietary notice
+       contained in the Software;
+   (d) use the Avanade name, logo or trademarks except as authorised under
+       Avanade brand policy.
+
+3. CONFIDENTIALITY
+
+   The Software constitutes Avanade Confidential Information and must be
+   handled in accordance with Avanade information security and data
+   classification policy. Client data accessed through the Software remains
+   the property of the relevant client and is subject to the confidentiality
+   and data protection terms of the applicable client engagement.
+
+4. CUSTOM CODE, NOT A PRODUCT
+
+   The Software is bespoke custom code developed for Avanade internal use
+   and for delivery to Avanade clients under engagement. It is not an
+   Avanade product, service or commercial offering, and nothing in this
+   licence or in any accompanying documentation should be read as presenting
+   it as one.
+
+   Avanade provides no product support, no service levels, no availability
+   commitment and no undertaking to maintain, update, patch or extend the
+   Software, and no commitment to backward compatibility between versions.
+
+   Any party that deploys or adopts the Software accepts responsibility for
+   its ongoing maintenance, including dependency and security updates,
+   testing, and compatibility with ServiceNow platform releases and with the
+   Model Context Protocol clients that connect to it. Where the Software is
+   used in client delivery, responsibility for that maintenance must be
+   agreed explicitly in the applicable engagement contract.
+
+5. NO WARRANTY
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+
+6. LIMITATION OF LIABILITY
+
+   IN NO EVENT SHALL AVANADE BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+   DEALINGS IN THE SOFTWARE.
+
+7. TERMINATION
+
+   This licence terminates automatically on termination of your employment,
+   contract or partner relationship with Avanade, or on written notice from
+   Avanade. On termination you must cease all use of the Software and
+   destroy all copies in your possession.
