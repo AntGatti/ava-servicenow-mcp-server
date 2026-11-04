@@ -84,16 +84,39 @@ describe('SN-Create-Fix-Script path handling', () => {
 
       // Either it is rejected, or it is reduced to a safe name - never written
       // outside the scripts directory.
+      //
+      // The invariant asserted here is containment, not the spelling of the name.
+      // An earlier version banned ".." as a substring, which is a proxy rather
+      // than the property: a file literally named ".._.._x.js" sits harmlessly in
+      // one directory, and that assertion passed on Windows and failed on Linux
+      // purely because path.basename() treats "\" as a separator on only one of
+      // them. What matters is that nothing escapes scriptsDir.
       if (!result.isError) {
         const written = filesWritten(scriptsDir);
         expect(written).toHaveLength(1);
-        expect(written[0]).not.toContain('..');
+        expect(path.dirname(path.resolve(scriptsDir, written[0]))).toBe(scriptsDir);
         expect(written[0]).not.toContain('/');
         expect(written[0]).not.toContain('\\');
       }
 
       // Nothing may appear anywhere above the scripts directory.
       expect(filesWritten(path.dirname(scriptsDir)).filter((f) => f !== 'scripts')).toEqual([]);
+    });
+
+    // Locks in the separator normalisation. Without it this reduced to
+    // "windows_style" on Windows and ".._.._windows_style" on Linux - both safe,
+    // but the same input must not produce different files on different hosts.
+    it.each([
+      ['..\\..\\windows_style', 'windows_style'],
+      ['../../posix_style', 'posix_style'],
+      ['C:\\temp\\mixed/style', 'style']
+    ])('reduces %s to %s on every platform', async (scriptName, expected) => {
+      const result = await callTool({ script_name: scriptName, script_content: '// payload' });
+
+      expect(result.isError).toBeFalsy();
+      const written = filesWritten(scriptsDir);
+      expect(written).toHaveLength(1);
+      expect(written[0]).toMatch(new RegExp(`^${expected}_.*\\.js$`));
     });
 
     it('refuses a name that sanitises down to nothing usable', async () => {

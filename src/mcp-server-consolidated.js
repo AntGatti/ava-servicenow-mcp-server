@@ -2025,7 +2025,13 @@ ${script.substring(0, 200)}${script.length > 200 ? '...' : ''}`
           // "../../../../tmp/evil" escapes scriptsDir and writes anywhere the
           // process can reach - on App Service that includes /home/data, where the
           // API key file lives.
-          const safeName = path.basename(String(script_name)).replace(/[^a-zA-Z0-9_.-]/g, '_');
+          // Backslashes are normalised first so this behaves identically on Linux
+          // and Windows. path.basename() only treats "\" as a separator on Windows,
+          // so without this a name like "..\..\x" survives basename() intact on the
+          // Linux host and reaches the allowlist as one long string - still safe,
+          // but a different file name than a developer sees locally.
+          const requested = String(script_name).replace(/\\/g, '/');
+          const safeName = path.posix.basename(requested).replace(/[^a-zA-Z0-9_.-]/g, '_');
           if (!safeName || /^\.+$/.test(safeName)) {
             throw new Error(
               `Invalid script_name "${script_name}": it must contain at least one letter, digit, underscore, dot or hyphen.`
