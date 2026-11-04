@@ -5,9 +5,13 @@
  * Proprietary and confidential. See LICENSE for terms.
  *
  * Modes (AVANADE_MCP_AUTH_MODE):
- *   off      no checks - current behaviour, the default
+ *   off      no checks - must be opted into explicitly
  *   warn     validate and log failures, but let the request through
- *   enforce  reject requests without a valid key with 401
+ *   enforce  reject requests without a valid key with 401 - THE DEFAULT
+ *
+ * The default is `enforce` so that a deployment which forgets to set the variable
+ * fails closed rather than serving every tool unauthenticated. Local development
+ * that genuinely wants no key must set AVANADE_MCP_AUTH_MODE=off by hand.
  *
  * Keys are accepted from `X-API-Key` or `Authorization`. Copilot Studio's
  * "API key" option sends the value under whatever header name the maker
@@ -19,7 +23,7 @@
 export const AUTH_MODES = ['off', 'warn', 'enforce'];
 
 export const resolveAuthMode = (value = process.env.AVANADE_MCP_AUTH_MODE) => {
-  const mode = (value || 'off').trim().toLowerCase();
+  const mode = (value || 'enforce').trim().toLowerCase();
   if (!AUTH_MODES.includes(mode)) {
     throw new Error(
       `Invalid AVANADE_MCP_AUTH_MODE "${value}". Expected one of: ${AUTH_MODES.join(', ')}`

@@ -176,9 +176,19 @@ describe('api keys', () => {
   });
 
   describe('resolveAuthMode', () => {
-    it('defaults to off and normalises case', () => {
-      expect(resolveAuthMode(undefined)).toBe('off');
+    it('normalises case and surrounding whitespace', () => {
       expect(resolveAuthMode(' ENFORCE ')).toBe('enforce');
+      expect(resolveAuthMode('Off')).toBe('off');
+    });
+
+    // The whole point of the default: a deployment that forgets to set
+    // AVANADE_MCP_AUTH_MODE must fail closed, not serve every tool openly.
+    it.each([undefined, null, ''])('fails closed when the mode is %p', (value) => {
+      expect(resolveAuthMode(value)).toBe('enforce');
+    });
+
+    it('requires an explicit opt-in to run without keys', () => {
+      expect(resolveAuthMode('off')).toBe('off');
     });
 
     it('rejects an unknown mode instead of silently running open', () => {

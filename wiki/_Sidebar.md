@@ -24,6 +24,7 @@
 
 **Governance**
 - [Frozen Contract](06-Governance/Frozen-Contract.md)
+- [Security Analysis (Nov 2026)](06-Governance/Security-Analysis-2026-11.md)
 - [Security Posture](06-Governance/Security-Posture.md)
 - [Documentation Standards](06-Governance/Documentation-Standards.md)
 

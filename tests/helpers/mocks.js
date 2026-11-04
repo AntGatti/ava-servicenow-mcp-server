@@ -18,6 +18,11 @@ export function createMockServiceNowClient() {
       url: 'https://dev123.service-now.com'
     })),
 
+    // createMcpServer() wires a progress callback on the client at construction,
+    // so any test that builds the real server needs these present.
+    setProgressCallback: jest.fn(),
+    notifyProgress: jest.fn(),
+
     // Generic table operations
     getRecords: jest.fn(),
     getRecord: jest.fn(),

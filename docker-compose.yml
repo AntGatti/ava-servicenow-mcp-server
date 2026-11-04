@@ -21,6 +21,11 @@ services:
 
       # SSE Configuration
       - SSE_KEEPALIVE_INTERVAL=${SSE_KEEPALIVE_INTERVAL:-15000}
+
+      # API key authentication for /mcp and /instances.
+      # Defaults to enforce: the container fails closed unless you opt out.
+      - AVANADE_MCP_AUTH_MODE=${AVANADE_MCP_AUTH_MODE:-enforce}
+      - AVANADE_MCP_API_KEYS_FILE=${AVANADE_MCP_API_KEYS_FILE:-}
     volumes:
       # Mount config file for multi-instance support
       - ./config/servicenow-instances.json:/app/config/servicenow-instances.json:ro

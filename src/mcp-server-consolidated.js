@@ -2020,15 +2020,38 @@ ${script.substring(0, 200)}${script.length > 200 ? '...' : ''}`
           const scriptsDir = path.resolve(process.cwd(), 'scripts');
           await fs.mkdir(scriptsDir, { recursive: true });
 
+          // script_name is caller-controlled and ends up in a file path, so it is
+          // reduced to a bare, known-safe file name. Without this, a name like
+          // "../../../../tmp/evil" escapes scriptsDir and writes anywhere the
+          // process can reach - on App Service that includes /home/data, where the
+          // API key file lives.
+          const safeName = path.basename(String(script_name)).replace(/[^a-zA-Z0-9_.-]/g, '_');
+          if (!safeName || /^\.+$/.test(safeName)) {
+            throw new Error(
+              `Invalid script_name "${script_name}": it must contain at least one letter, digit, underscore, dot or hyphen.`
+            );
+          }
+
           // Generate script file with header
           const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-          const fileName = `${script_name}_${timestamp}.js`;
+          const fileName = `${safeName}_${timestamp}.js`;
           const filePath = path.join(scriptsDir, fileName);
 
+          // Defence in depth: the name is already sanitised, so this should never
+          // fire. It is here so that any future change to the naming scheme cannot
+          // silently reintroduce an escape.
+          if (path.dirname(path.resolve(filePath)) !== scriptsDir) {
+            throw new Error(`Refusing to write outside ${scriptsDir}`);
+          }
+
+          // A "*/" in free text would close this header comment early and push the
+          // rest of it into executable position in the generated file.
+          const safeDescription = description ? String(description).replace(/\*\//g, '* /') : description;
+
           const fileContent = `/**
- * Fix Script: ${script_name}
+ * Fix Script: ${safeName}
  * Created: ${new Date().toISOString()}
- * ${description ? `Description: ${description}` : ''}
+ * ${safeDescription ? `Description: ${safeDescription}` : ''}
  *
  * INSTRUCTIONS:
  * 1. Copy the entire script below
