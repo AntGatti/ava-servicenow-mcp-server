@@ -30,14 +30,18 @@ const MAX_SESSIONS = parseInt(process.env.AVANADE_MCP_MAX_SESSIONS || '100', 10)
 
 const app = express();
 
-// API key authentication. Defaults to "off" so existing clients are unaffected
-// until AVANADE_MCP_AUTH_MODE is set to "warn" or "enforce".
+// API key authentication. Defaults to "enforce": an unset AVANADE_MCP_AUTH_MODE
+// must fail closed, because the alternative is a deployment that silently serves
+// every tool - including server-side script execution - to anyone who can reach
+// the port. Running without a key is still possible, but only by asking for it.
 const AUTH_MODE = resolveAuthMode();
 const keyStore = new FileKeyStore({ filePath: process.env.AVANADE_MCP_API_KEYS_FILE || DEFAULT_KEYS_FILE });
 const requireKey = createAuthMiddleware({ store: keyStore, mode: AUTH_MODE });
 console.log(`🔐 Auth mode: ${AUTH_MODE}${AUTH_MODE === 'off' ? '' : ` (${keyStore.size} keys in ${keyStore.filePath})`}`);
 if (AUTH_MODE === 'enforce' && keyStore.size === 0) {
-  console.warn('⚠️  Auth mode is enforce but no API keys exist - every request will be rejected. Run: npm run keys -- create --label <name>');
+  console.warn('⚠️  Auth mode is enforce but no API keys exist - every request will be rejected.');
+  console.warn('   Create one:  npm run keys -- create --label <name>');
+  console.warn('   Local dev without a key:  set AVANADE_MCP_AUTH_MODE=off');
 }
 
 // /health stays open for Azure and Docker probes, but is the one route that

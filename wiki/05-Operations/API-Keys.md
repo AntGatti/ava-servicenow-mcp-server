@@ -10,9 +10,25 @@ Authentication for the HTTP endpoint (`/mcp`, `/instances`). Stdio is unaffected
 
 | Mode | Behaviour |
 |---|---|
-| `off` (default) | No checks. Current behaviour. |
+| `enforce` **(default)** | Missing or invalid key returns `401`. `/health` stays open but no longer returns the instance URL. |
 | `warn` | Validates and logs failures, lets the request through. Use to find clients without a key. |
-| `enforce` | Missing or invalid key returns `401`. `/health` stays open but no longer returns the instance URL. |
+| `off` | No checks. Must be set explicitly. |
+
+**An unset `AVANADE_MCP_AUTH_MODE` means `enforce`.** The default is deliberately the
+closed one: a deployment that forgets the variable rejects traffic rather than serving
+every tool — including server-side script execution — to anyone who can reach the port.
+Running without a key is still supported, but you have to ask for it with
+`AVANADE_MCP_AUTH_MODE=off`.
+
+On first run under the default, the server has no keys and rejects everything. It says
+so at startup:
+
+```
+🔐 Auth mode: enforce (0 keys in config/api-keys.json)
+⚠️  Auth mode is enforce but no API keys exist - every request will be rejected.
+   Create one:  npm run keys -- create --label <name>
+   Local dev without a key:  set AVANADE_MCP_AUTH_MODE=off
+```
 
 ## Managing keys
 

@@ -1,0 +1,59 @@
+name: CI
+
+# Validates every pull request before it can be merged.
+#
+# This exists because the deploy workflows cannot do it: their jobs are gated on
+# `github.ref == 'refs/heads/main'`, so adding a pull_request trigger there would
+# skip the job entirely and report no checks at all. Until this workflow landed,
+# the test suite, the frozen contract check and the wire-surface smoke test only
+# ran *after* a merge, as part of deploying - so a PR could not be validated
+# before it was approved.
+#
+# Deliberately not included: `npm audit`. The production tree carries a known
+# high advisory (zod) that was reviewed and accepted, so gating on audit here
+# would fail every run for a decision that has already been taken. Dependency
+# gating belongs with that decision, not in this workflow.
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '22'
+
+permissions:
+  contents: read
+
+# A new push to a PR makes the previous run irrelevant, so don't pay for it.
+# Runs on main are not cancelled: each one is the record for a distinct commit.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  verify:
+    name: Tests, contract and wire surface
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - run: npm ci
+
+      - name: Tests
+        run: npm test
+
+      # The client-facing contract is frozen: tool names, server identity and the
+      # wire surface. A change here is a breaking change for deployed MCP clients.
+      - name: Frozen contract
+        run: npm run contract:verify
+
+      - name: Wire surface smoke test
+        run: npm run smoke:tools

@@ -2,11 +2,18 @@
 
 # Security Posture
 
+> **Superseded in part.** The current findings, scoring and remediation plan live in
+> [Security Analysis — November 2026](Security-Analysis-2026-11.md). The table below
+> predates the API-key work, the CI gates and the src-only deploy package, and no
+> longer reflects what is deployed.
+
 Honest statement of where this server stands. Written so that nobody deploys it
 believing it is hardened when it is not.
 
-**Summary: this server is not safe to expose on an untrusted network today.**
-Its only protection is network placement.
+**Summary: API key authentication now ships and is enforced on the AVA app, which is
+verified correct as of 2026-11-04.** A valid key is still all-or-nothing: it grants every
+tool on every table, including both server-side execution channels. Treat a key as
+equivalent to ServiceNow admin.
 
 ---
 
@@ -14,12 +21,12 @@ Its only protection is network placement.
 
 | # | Finding | Severity | Status |
 |---|---|---|---|
-| 1 | HTTP server has no authentication of any kind | 🔴 Critical | **Open** |
-| 2 | Leaked credential in git history and in `docs/SETUP_GUIDE.md` | 🔴 Critical | **Open — rotate** |
+| 1 | HTTP server has no authentication of any kind | 🔴 Critical | ✅ **Fixed** — API keys, `enforce` on the AVA app |
+| 2 | Leaked credential in git history | 🔴 Critical | ✅ History rewritten — **rotation not performed, accepted as risk** |
 | 3 | ServiceNow auth is Basic only; no identity propagation | 🟠 High | Open |
 | 4 | `SN-Execute-Background-Script` is RCE by design, ungated | 🟠 High | Open |
 | 5 | No tool-level authorization: any table, any field | 🟡 Medium | Open |
-| 6 | `/health` and `/instances` disclose instance URLs unauthenticated | 🟡 Medium | Open |
+| 6 | `/health` and `/instances` disclose instance URLs | 🟡 Medium | ✅ **Fixed** under `enforce` — `/health` returns status only, `/instances` needs a key |
 | 7 | `servicenow://instance` resource exposes `SERVICENOW_USERNAME` | 🟡 Medium | Open |
 | 8 | No structured logging, correlation IDs or tool audit trail | 🟡 Medium | Open |
 | 9 | `zod` held at v3 with a known high advisory | 🟡 Medium | Deferred by decision |
